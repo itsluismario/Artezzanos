@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+{% load static %}
+  {% block content %}
+
+      <div class="modal-dialog" role="document" style = "margin-top: 136px;margin-bottom: 150px;">
+        <div class="modal-content">
+          <div class="modal-body tab-content py-4">
+
+            <form method="POST" class="tab-pane fade show active" id="signin" autocomplete="off">
+              {% csrf_token %}
+              {{ form.as_p }}
+              <div class="mb-3 d-flex flex-wrap justify-content-between">
+                <div >
+                    <input class="btn btn-primary d-block btn-shadow" type="submit" name="login" value="login">
+                </div>
+                <a class="fs-sm" href="#">Forgot password?</a>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+
+
+  {% endblock %}

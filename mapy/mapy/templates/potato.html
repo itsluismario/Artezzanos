@@ -1,0 +1,306 @@
+AIzaSyAkJLaIyCwuCXo5y_JXHIIEjz9grpyaX3Q
+
+<div class="modal-dialog" role="document">
+  {% if registered %}
+    <h1>Thank you for registering!</h1>
+  {% else %}
+  {% if errors %}
+    <div class="alert alert-soft-danger" role="alert">
+      {{errors}}
+    </div>
+  {% endif %}
+{% endif %}
+  <div class="modal-content">
+
+    <div class="modal-body tab-content py-4">
+
+      <form method="POST" class="tab-pane fade show active" id="signin" autocomplete="off">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="mb-3 d-flex flex-wrap justify-content-between">
+          <div >
+            <button class="btn btn-primary d-block btn-shadow" type="submit" value="login">Log in</button>
+          </div>
+          <a class="fs-sm" href="#">Forgot password?</a>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% extends 'layout.html' %}
+{% load static %}
+  {% block content %}
+
+{% if registered %}
+  <h1>Thank you for registering!</h1>
+{% else %}
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" name="registrer" value="registrer">
+  </form>
+
+  {% if errors %}
+    <div class="alert alert-soft-danger" role="alert">
+      {{errors}}
+    </div>
+  {% endif %}
+{% endif %}
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<h1>Django Level Five</h1>
+{%for item in items%}
+  {{item.title}}
+    <img src="{{item.itemPhotoComplete.url}}">
+  {%endfor%}
+
+
+{% endblock %}
+
+
+
+<!-- ///////////////////////CARD//////////////////// -->
+<div class="card border-0 shadow">
+  <img src="pat-to-image" class="card-img-top" alt="Card image">
+  <div class="card-body">
+    <h5 class="card-title">Card title</h5>
+    <a href="#" class="btn btn-sm btn-primary">Go somewhere</a>
+  </div>
+</div>
+
+
+
+
+<!-- ///////////////////////     Modal markup    /////////////////// -->
+<div class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p class="fs-sm">Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary btn-sm">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+def jMap(request):
+    obj = {
+        "type": "FeatureCollection",
+        "features": [
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                -73.99967,
+                40.73723
+              ]
+            },
+            "properties": {
+              "id": "1",
+              "index": 0,
+              "isActive": True,
+              "logo": "http://placehold.it/32x32",
+              "image": "photo-1484154218962-a197022b5858.jpg",
+              "link": "detail-rooms.html",
+              "url": "#",
+              "name": "Modern, Well-Appointed Room",
+              "subtitle": "Private room",
+              "email": "biancabriggs@bluehill.com",
+              "stars": 5,
+              "price": 80,
+              "person": "Pamela",
+              "avatar": "img/avatar/avatar-0.jpg",
+              "phone": "+1 (920) 407-3975",
+              "address": "151 Karweg Place, Waumandee, Iowa, 5508",
+              "about": "Cupidatat excepteur non dolore laborum et quis nostrud veniam dolore deserunt. Pariatur dolore ut in elit id nulla. Irure nostrud sint deserunt enim Lorem. Do eu esse consequat mollit labore commodo officia labore voluptate sit voluptate cupidatat.\r\n",
+              "tags": [
+                "et",
+                "cupidatat"
+              ]
+            }
+          }]}
+    return JsonResponse(obj)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% if user.is_authenticated %}
+<li class="nav-item">
+  <a class="navbar-tool ms-1 ms-lg-0 me-n1 me-lg-2" href="{% url 'core:logout' %}">
+    <div class="navbar-tool-icon-box">
+      <i class="navbar-tool-icon ci-user"></i>
+    </div>
+    <div class="navbar-tool-text ms-n2"><small>Hello, {{ user.first_name }}</small>Logout</div>
+  </a>
+</li>
+{% else %}
+<li class="nav-item"><a class="nav-link" href="{% url 'core:login' %}">Log in</a></li>
+<li class="nav-item"><a class="nav-link" href="{% url 'core:signup' %}">Sign up</a></li>
+{% endif %}
+<li class="nav-item"><a class="nav-link" href="#">My Cart</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- place item-->
+<div class="col-sm-2 mb-5 hover-animate" data-marker-id="{{ item.id }}">
+  <div class="card h-100 border-0 shadow">
+    <div class="card-img-top overflow-hidden"> <img class="img-fluid" src="{{ item.itemPhotoComplete.url }}" alt="Modern, Well-Appointed Room"/><a class="tile-link" href="/artist/{{ item.artist.id }}"></a>
+    </div>
+
+    <div class="card-body d-flex align-items-center">
+      <div class="w-100">
+        <h6 class="card-title"><a class="text-decoration-none text-dark" href="/artist/{{ item.artist.id }}">{{ item.title }}</a></h6>
+        <div class="d-flex card-subtitle mb-3">
+          <p class="flex-grow-1 mb-0 text-muted text-sm">by {{ item.artist }}</p>
+        </div>
+        <p class="card-text text-muted"><span class="text-primary">{{ item.hours }} hours spent on this masterpiece</span> <br>${{ item.price }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="row">
+  {%for item in items%}
+  <!-- Start Item -->
+  <div class="col-4" >
+      <a href="/item/{{ item.id }}">
+        <div class="card" data-toggle="modal" data-target="#ModalCenter">
+          <div>
+            <img class="card-img-top" src="{{ item.itemPhotoComplete.url }}">
+          </div>
+          <div class="card-body">
+            <h6 class="card-title">{{item.title}}</h6>
+            <p class="card-text text-muted">{{item.get_type_display}}<br>${{ item.price }}<br><span class="text-primary">{{ item.hours }} hours spent on this masterpiece<br><u>See more</u></span></p>
+          </div>
+        </div>
+      </a>
+  </div>
+  <!-- End Item -->
+  {%endfor%}
+</div>

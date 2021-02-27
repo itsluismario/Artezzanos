@@ -1,0 +1,36 @@
+{% extends 'layout.html' %}
+{% load static %}
+  {% block content %}
+
+  <div class="modal-dialog" role="document">
+    {% if registered %}
+      <h1>Thank you for registering!</h1>
+    {% else %}
+    {% if errors %}
+    <div class="alert alert-primary d-flex" role="alert">
+      <div class="alert-icon">
+        <i class="ci-bell"></i>
+      </div>
+      <div>{{errors}}</div>
+    </div>
+    {% endif %}
+  {% endif %}
+    <div class="modal-content">
+
+      <div class="modal-body tab-content py-4">
+
+        <form method="POST" class="tab-pane fade show active" id="signin" autocomplete="off">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <div class="mb-3 d-flex flex-wrap justify-content-between">
+            <div >
+              <button class="btn btn-primary d-block btn-shadow" type="submit" value="signup">Sign up</button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+{% endblock %}
