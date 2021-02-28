@@ -4717,6 +4717,21 @@ fieldset:disabled .btn {
   transition: color 0.25s ease-in-out, background-color 0.25s ease-in-out, border-color 0.25s ease-in-out, box-shadow 0.2s ease-in-out, border-radius 0.15s ease;
 }
 
+.credit-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.625rem 1.25rem;
+  font-size: 1rem;
+  color: #373f50;
+  background-color: transparent;
+  border: 1px solid #dde4eb;
+  border-radius: 5px 5px 0px 0px;
+  overflow-anchor: none;
+  transition: color 0.25s ease-in-out, background-color 0.25s ease-in-out, border-color 0.25s ease-in-out, box-shadow 0.2s ease-in-out, border-radius 0.15s ease;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .accordion-button {
     transition: none;

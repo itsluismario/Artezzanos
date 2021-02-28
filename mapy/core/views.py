@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, logout as do_logout, login as do_login
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
-from core.forms import UserSignUpForm, UserLoginForm
+from core.forms import UserSignUpForm, UserLoginForm, PaymentForm
 
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
@@ -196,6 +196,12 @@ def shop_cart(request):
     })
     returnHTML.set_cookie("cookieCar",car.id)
     return returnHTML
+
+def payment(request):
+    form = PaymentForm()
+    return render(request,'payment.html', {
+        'form': form
+        })
 
 def user_login(request):
     form = UserLoginForm()

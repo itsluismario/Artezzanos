@@ -13,5 +13,6 @@ urlpatterns = [
     path('artist/<int:artist_id>', views.artist, name='artist'),
     path('item/<int:item_id>', views.item, name='item'),
     path('update_item',views.update_item, name='updateItem'),
-    path('delete_item',views.delete_item, name='deleteItem')
+    path('delete_item',views.delete_item, name='deleteItem'),
+    path('payment',views.payment, name='payment')
 ]
