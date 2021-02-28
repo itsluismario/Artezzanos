@@ -16,6 +16,7 @@ from django.contrib.auth.forms import AuthenticationForm
 
 from django.core.paginator import Paginator
 
+
 User = settings.AUTH_USER_MODEL
 
 def index(request):
@@ -72,6 +73,7 @@ def update_item(request):
 
     return JsonResponse({'success':False,
                         'total': car.total,
+                        'quantity': car.quantity
                         })
 
 def delete_item(request):
@@ -104,6 +106,7 @@ def delete_item(request):
 
         return JsonResponse({'success':False,
                             'total': car.total,
+                            'quantity': car.quantity
                             })
 
 def artist(request, artist_id):

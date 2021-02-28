@@ -15,7 +15,7 @@
                 <div class="row pt-3 mx-n2">
                   {% for item in items %}
                   <!-- Product-->
-                  <div class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4" data-marker-id="{{ item.id }}">
+                  <div class="col-lg-3 col-md-4 col-sm-6 col-6 px-2 mb-4" data-marker-id="{{ item.id }}">
                     <div class="card " >
                       <a class="card-img-top d-block overflow-hidden" href="/item/{{ item.id }}"><img src="{{ item.itemPhotoComplete.url }}" alt="Product"></a>
                       <div class="card-body py-2"><a class="product-meta d-block fs-xs pb-1" href="/item/{{ item.id }}">by {{ item.artist }}</a>
@@ -27,21 +27,20 @@
                         </div>
                       </div>
                     </div>
-                    <hr class="d-sm-none">
                   {% endfor %}
                 </div>
 
                 <!-- Artist grid-->
                 <div class="row pt-3 mx-n2">
                 <!-- Artist Photo-->
-                <div class="col-lg-3 col-md-4 col-sm-3 px-2 mb-4" data-marker-id="{{ item.id }}">
-                  <div class="card " >
-                    <a class="card-img-top d-block overflow-hidden"><img src="{{ artist.artistPhoto.url }}"></a>
-                    </div>
+                <div class="col-lg-3 col-md-4 col-sm-3 col-3 px-2 mb-4" data-marker-id="{{ item.id }}">
+                  <div class="card" >
+                    <a class="card-img-top d-block overflow-hidden" style="border-radius: 5px;"><img src="{{ artist.artistPhoto.url }}"></a>
                   </div>
-                  <hr class="d-sm-none">
+                  </div>
+
                   <!-- Artist Text-->
-                  <div class="col-lg-9 col-md-8 col-sm-9 px-2 mb-4" data-marker-id="{{ item.id }}">
+                  <div class="col-lg-9 col-md-8 col-sm-9 col-9 px-2 mb-4" data-marker-id="{{ item.id }}">
                     <div class="card " >
                       <div class="card-body py-2">
                         <h2 class="product-title ">{{ artist.artistName }}</h2>

@@ -104,12 +104,12 @@
     <!-- Toolbar for handheld devices (Default)-->
     <div class="handheld-toolbar">
       <div class="d-table table-layout-fixed w-100">
-        <a class="d-table-cell handheld-toolbar-item" href="{% url 'core:index' %}" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" onclick="window.scrollTo(0, 0)">
+        <a class="d-table-cell handheld-toolbar-item" href="{% url 'core:index' %}">
         <span class="handheld-toolbar-icon"><i class="ci-menu"></i></span>
         <span class="handheld-toolbar-label">Menu</span>
         </a>
 
-        <a class="d-table-cell handheld-toolbar-item" href="shop-cart.html">
+        <a class="d-table-cell handheld-toolbar-item" href="{% url 'core:cart' %}">
         <span class="handheld-toolbar-icon"><i class="ci-cart"></i>
         <span class="badge bg-primary rounded-pill ms-1" id="quantityModePhone">{{ car.quantity }}</span></span>
         <span class="handheld-toolbar-label" id="totalMoneyModePhone">$ {{ car.total }}</span>

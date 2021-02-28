@@ -2,3 +2,4 @@ django
 pillow
 django-countries
 django-utils-six
+openpay

@@ -17,9 +17,9 @@ $(document).ready(()=>{
       type:'GET',
       url:'/delete_item?id_item='+$(this).parent('div').find(".id_item").val()
       ,success:function(request){
+        console.log(request['total'])
         $('#totalMoney').text('$ '+request['total']),
         $('#totalMoneyModePhone').text('$ '+request['total']),
-        $('#quantityModePhone').text(request['quantity'])
         divDelete.remove()
       }
     })

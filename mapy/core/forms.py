@@ -71,6 +71,12 @@ class UserLoginForm(forms.ModelForm):
         model = User
         fields = ('email','password')
 
+class PaymentForm(forms.Form):
+    holder_name = forms.CharField(max_length=64,required=True)
+    expiration_year = forms.IntegerField(min_value=0, max_value=2)
+    expiration_month = forms.IntegerField(min_value=0, max_value=2)
+    cvv2 = forms.IntegerField(min_value=0, max_value=3)
+
 """""
 END MODIFICATION
 """""
@@ -123,9 +129,3 @@ class RefundForm(forms.Form):
         'rows': 4
     }))
     email = forms.EmailField()
-
-
-class PaymentForm(forms.Form):
-    stripeToken = forms.CharField(required=False)
-    save = forms.BooleanField(required=False)
-    use_default = forms.BooleanField(required=False)

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import openpay
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -141,3 +142,9 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'mapy.backends.EmailAuthBackend'
 )
+
+# Open pay
+openpay.api_key = "sk_84c6e2802b2e450d963385e8cd891124"
+openpay.verify_ssl_certs = False
+openpay.merchant_id = "mkjy3yttod6hdn9wkxje"
+openpay.production = True  # By default this works in sandbox mode

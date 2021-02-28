@@ -1,4 +1,4 @@
-login.html
-signup.html
-views user_login y user_signup
-layout.html el navbar
+Fix video
+Fix quantity in the phone mode
+Fix Openpay
+Fix index (region,category,artist)

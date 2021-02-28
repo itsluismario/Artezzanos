@@ -43,7 +43,7 @@
             {% for item in items %}
 
             <!-- Product-->
-            <div class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4" data-marker-id="{{ item.id }}">
+            <div class="col-lg-3 col-md-4 col-sm-6 col-6 px-2 mb-4" data-marker-id="{{ item.id }}">
               <div class="card product-card" >
                 <a class="card-img-top d-block overflow-hidden" href="/artist/{{ item.artist.id }}"><img src="{{ item.itemPhotoComplete.url }}" alt="Product"></a>
                 <div class="card-body py-2"><a class="product-meta d-block fs-xs pb-1" href="/artist/{{ item.artist.id }}">by {{ item.artist }}</a>
@@ -54,8 +54,9 @@
                     </div>
                   </div>
                 </div>
+                <hr class="d-sm-none">
               </div>
-              <hr class="d-sm-none">
+
             {% endfor %}
           </div>
 
