@@ -1,6 +1,6 @@
 from django.contrib import admin
 # Register your models here.
-from .models import Artist, Item, Payment, Coupon, Address, UserProfile, CartHeader, CartBody, Region, Category, Community
+from .models import Artist, Item, Payment, ShippingAddress, UserProfile, CartHeader, CartBody, Region, Category, Community
 
 
 from django.contrib.auth.admin import UserAdmin
@@ -15,18 +15,18 @@ def make_refund_accepted(modeladmin, request, queryset):
 make_refund_accepted.short_description = 'Update orders to refund granted'
 
 
-class AddressAdmin(admin.ModelAdmin):
+class ShippingAddressAdmin(admin.ModelAdmin):
     list_display = [
         'user',
-        'street_address',
-        'apartment_address',
+        'shipping_address',
+        'shipping_zip',
+        'phone_number',
+        'instructions',
         'country',
-        'zip',
-        'address_type',
-        'default'
+        'is_delivered'
     ]
-    list_filter = ['default', 'address_type', 'country']
-    search_fields = ['user', 'street_address', 'apartment_address', 'zip']
+    list_filter = ['is_delivered', 'country']
+    search_fields = ['user', 'shipping_address','shipping_zip']
 
 class ItemInline(admin.TabularInline):
     model = Item
@@ -53,6 +53,5 @@ admin.site.register(Item)
 admin.site.register(CartHeader)
 admin.site.register(CartBody)
 admin.site.register(Payment)
-admin.site.register(Coupon)
-admin.site.register(Address, AddressAdmin)
+admin.site.register(ShippingAddress, ShippingAddressAdmin)
 admin.site.register(UserProfile)

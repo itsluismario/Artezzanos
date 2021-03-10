@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, logout as do_logout, login as do_login
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
-from core.forms import UserSignUpForm, UserLoginForm, PaymentForm
+from core.forms import UserSignUpForm, UserLoginForm, PaymentForm, ShippingForm
 
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
@@ -143,7 +143,7 @@ def item(request, item_id):
             car = CartHeader.objects.create(total=0,quantity=0)
     return render(request,'item.html', {
         "item": Item.objects.get(pk=item_id),
-        'car': car
+        "car": car
     })
 
 def shop_cart(request):
@@ -199,8 +199,39 @@ def shop_cart(request):
 
 def payment(request):
     form = PaymentForm()
+    car = CartHeader.objects.get(pk=request.COOKIES["cookieCar"])
+    items = CartBody.objects.filter(cartHeader=car)
     return render(request,'payment.html', {
-        'form': form
+        'form': form,
+        'car': car,
+        'items': items
+        })
+
+def shipping(request):
+    form = ShippingForm()
+    car = CartHeader.objects.get(pk=request.COOKIES["cookieCar"])
+    items = CartBody.objects.filter(cartHeader=car)
+    if request.method == "POST":
+        shipping_form = ShippingForm(data=request.POST)
+
+        if shipping_form.is_valid():
+            shipping = shipping_form.save(commit=False)
+            shipping.save()
+            print('Saved!')
+        else:
+            print(shipping_form.errors)
+            # HERE SHOULD SEND A MESSAGE !!!!!
+            return render(request,'shipping_address.html',{
+                'form': form,
+                'car': car,
+                'items': items,
+                'errors':shipping_form.errors
+            })
+
+    return render(request,'shipping_address.html', {
+        'form': form,
+        'car': car,
+        'items': items
         })
 
 def user_login(request):
@@ -255,6 +286,9 @@ def user_signup(request):
                 # email = user_form.cleaned_data['email']
                 user = user_form.save(commit=False)
                 user.username = user.email
+                user.first_name = user.first_name
+                user.last_name = user.last_name
+
                 if user.save():
                      return render(request,'signup.html',{
                          'form':form,

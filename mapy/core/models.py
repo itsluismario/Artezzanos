@@ -12,11 +12,6 @@ from django.contrib.auth.models import AbstractUser
 
 from django.conf import settings
 
-ADDRESS_CHOICES = (
-    ('B', 'Billing'),
-    ('S', 'Shipping'),
-)
-
 class User(AbstractUser):
     email = models.EmailField('email address', unique=True)
     USERNAME_FIELD = 'email'
@@ -101,24 +96,18 @@ class CartBody(models.Model):
         return f"Id: {self.id}. carBody of cartHeader {self.cartHeader.id}. Item: {self.item}. Quantity: {self.quantityByItems}"
 
 
-class Address(models.Model):
+class ShippingAddress(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)
-    street_address = models.CharField(max_length=100)
-    apartment_address = models.CharField(max_length=100)
-
+    shipping_address = models.CharField(max_length=100)
+    shipping_zip = models.CharField(max_length=100)
+    phone_number = models.IntegerField()
+    instructions = models.CharField(max_length=100)
     country = CountryField(multiple=False)
-
-    zip = models.CharField(max_length=100)
-    address_type = models.CharField(max_length=1, choices=ADDRESS_CHOICES)
-    default = models.BooleanField(default=False)
+    is_delivered = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.username
-
-    class Meta:
-        verbose_name_plural = 'Addresses'
-
 
 class Payment(models.Model):
     stripe_charge_id = models.CharField(max_length=50)
@@ -129,11 +118,3 @@ class Payment(models.Model):
 
     def __str__(self):
         return self.user.username
-
-
-class Coupon(models.Model):
-    code = models.CharField(max_length=15)
-    amount = models.FloatField()
-
-    def __str__(self):
-        return self.code

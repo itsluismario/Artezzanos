@@ -22,7 +22,49 @@
           <section class="col-lg-8 pt-2 pt-lg-4 pb-4 mb-3">
             <div class="pt-2 px-4 pe-lg-0 ps-xl-5">
               <!-- Title-->
-              <h2 class="h6 border-bottom pb-3 mb-3">Billing details</h2>
+              <h2 class="h6 border-bottom pb-3 mb-3">Shipping details</h2>
+              <!-- Billing detail-->
+              <form method="POST" autocomplete="off">
+              <div class="row pb-4 gx-4 gy-3">
+                {% if errors %}
+                <div class="alert alert-primary d-flex" role="alert">
+                  <div class="alert-icon">
+                    <i class="ci-bell"></i>
+                  </div>
+                  <div>{{errors}}</div>
+                </div>
+                {% endif %}
+                <div class="col-sm-6">
+                  <label for="mc-fn">Full name <span class='text-danger'>*</span></label>
+                  {{ form.holder_name }}
+                </div>
+                <div class="col-12">
+                  <label for="shipping_address">Shipping address <span class='text-danger'>*</span></label>
+                  {{ form.shipping_address }}
+                </div>
+                <div class="col-sm-12">
+                  <label for="shipping_zip">Shipping Zip<span class='text-danger'>*</span></label>
+                  {{ form.shipping_zip }}
+                </div>
+                <div class="col-sm-12">
+                  <label for="phone_number">Phone number<span class='text-danger'>*</span></label>
+                  {{ form.phone_number }}
+                </div>
+                <div class="col-sm-12">
+                  <label  for="instructions">Details to find you place</label>
+                  {{ form.instructions }}
+
+                </div>
+                <div class="col-sm-12">
+                  <label for="instructions">Select your country</label>
+                  {{ form.country }}
+                </div>
+                <div class="col-sm-6">
+                  <label>Right now shipping is only available in USA</label>
+                </div>
+                <a class="btn btn-primary btn-shadow d-block w-100 mt-4" type="submit" href="{% url 'core:payment' %}"><i class="ci-card fs-lg me-2"></i>Proceed to Checkout</a>
+              </div>
+              </form>
 
               <!-- Order preview on mobile (screens small than 991px)-->
               <div class="widget mb-3 d-lg-none">
@@ -31,51 +73,13 @@
                 <div class="d-flex align-items-center pb-2 border-bottom"><a class="d-block flex-shrink-0 me-2" href="/item/{{ item.item.id }}"><img class="rounded-1" src="{{ item.item.itemPhotoComplete.url }}" width="64" alt="Product"></a>
                   <div class="ps-1">
                     <h6 class="widget-product-title"><a href="/item/{{ item.item.id }}">{{ item.item.title }}</a></h6>
-                    <div class="widget-product-meta"><span class="text-accent border-end pe-2 me-2">$ {{ item.item.price }} X ({{ item.quantityByItems }}) </div>
+                    <div class="widget-product-meta"><span class="text-accent border-end pe-2 me-2">$ {{ item.item.price }} X ({{ item.quantityByItems }})</span></div>
                   </div>
                 </div>
                 {%endfor%}
                 <ul class="list-unstyled fs-sm py-3">
                   <li class="d-flex justify-content-between align-items-center fs-base"><span class="me-2">Total:</span><span class="text-end">$ {{ car.total }}</span></li>
                 </ul>
-              </div>
-              <!-- Payment methods accordion-->
-              <div class="accordion mb-2" id="payment-method" role="tablist">
-                <div class="accordion-item">
-                  <h3 class="accordion-header credit-card">Pay with Credit Card</h3>
-
-                  <div class="accordion-collapse collapse show" id="card" data-bs-parent="#payment-method" role="tabpanel">
-                    <div class="accordion-body">
-
-                      <p class="fs-sm">We accept following credit cards:&nbsp;&nbsp;<img class="d-inline-block align-middle" src="{% static 'cartzilla/img/cards.png' %}" style="width: 187px;" alt="Cerdit Cards"></p>
-                      <div class="credit-card-wrapper"></div>
-                      <form  method="POST" class="credit-card-form row g-3">
-                        <div class="col-sm-6">
-                          <input class="form-control" type="text" name="number" placeholder="Card Number" required>
-                        </div>
-                        <div class="col-sm-6">
-                          {{ form.holder_name }}
-                        </div>
-                        <div class="col-sm-2">
-                          {{ form.expiration_month }}
-                        </div>
-                        <div class="col-sm-2">
-                          {{ form.expiration_year }}
-                        </div>
-                        <div class="col-sm-2">
-                          {{ form.cvc }}
-                        </div>
-                        <div class="col-sm-6">
-                          <button class="btn btn-primary d-block w-100" type="submit">Place order</button>
-                        </div>
-                      </form>
-
-                    </div>
-                  </div>
-
-                </div>
-
-
               </div>
             </div>
           </section>
@@ -94,9 +98,7 @@
                   </div>
                 </div>
                 {%endfor%}
-                <ul class="list-unstyled fs-sm pt-3 pb-2 border-bottom">
-                  <li class="d-flex justify-content-between align-items-center"><span class="me-2">Total:</span><span class="text-end">{{ car.total }}</span></li>
-                </ul>
+                <h3 class="fw-normal text-center my-4"><span class="me-2">Total:</span><span class="text-end">$ {{ car.total }}</span></h3>
               </div>
             </div>
           </aside>
@@ -117,7 +119,7 @@
     <script src="{% static 'cartzilla/js/theme.min.js' %}"></script>
 
   </body>
-  {% endblock %}
+{% endblock %}
 
   {%block js%}
   <script src="{%static '/js/shop-cart.js'%}"></script>
