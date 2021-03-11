@@ -213,6 +213,7 @@ def shipping(request):
     items = CartBody.objects.filter(cartHeader=car)
     if request.method == "POST":
         shipping_form = ShippingForm(data=request.POST)
+        print(shipping_form['shipping_address'])
 
         if shipping_form.is_valid():
             shipping = shipping_form.save(commit=False)

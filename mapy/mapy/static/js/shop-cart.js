@@ -4,8 +4,10 @@ $(document).ready(()=>{
       type:'GET',
       url:'/update_item?id_item='+$(this).parent('div').find(".id_item").val()+'&&quatityItem='+$(this).val()
       ,success:function(request){
-        $('#totalMoney').text('$ '+request['total']),
-        $('#totalMoneyModePhone').text('$ '+request['total'])
+        console.log(request);
+        $('#totalMoney').text('$ '+request['total']);
+        $('#quantityModePhone').text(request['quantity']);
+        $('#totalMoneyModePhone').text('$ '+request['total']);
       }
     })
   });
@@ -17,9 +19,10 @@ $(document).ready(()=>{
       type:'GET',
       url:'/delete_item?id_item='+$(this).parent('div').find(".id_item").val()
       ,success:function(request){
-        console.log(request['total'])
-        $('#totalMoney').text('$ '+request['total']),
-        $('#totalMoneyModePhone').text('$ '+request['total']),
+        console.log(request['total']);
+        $('#totalMoney').text('$ '+request['total']);
+        $('#quantityModePhone').text(request['quantity']);
+        $('#totalMoneyModePhone').text('$ '+request['total']);
         divDelete.remove()
       }
     })
