@@ -99,20 +99,24 @@ class CartBody(models.Model):
 class ShippingAddress(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)
+    holder_name = models.CharField(max_length=100)
     shipping_address = models.CharField(max_length=100)
     shipping_zip = models.CharField(max_length=100)
-    phone_number = models.IntegerField()
+    phone_number = models.DecimalField(max_digits=64,decimal_places=0)
     instructions = models.CharField(max_length=100)
     country = CountryField(multiple=False)
     is_delivered = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.user.username
+        nl = '\n'
+        return f"Address: {self.shipping_address}, {self.shipping_zip}, {self.country}.\n {nl} Phone Number: {self.phone_number}. Instructions: {self.instructions}"
 
 class Payment(models.Model):
-    stripe_charge_id = models.CharField(max_length=50)
+
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.SET_NULL, blank=True, null=True)
+                             on_delete=models.SET_NULL, null=True, blank=True)
+    holder_name = models.CharField(max_length=100)
+    card_number = models.IntegerField()
     amount = models.FloatField()
     timestamp = models.DateTimeField(auto_now_add=True)
 

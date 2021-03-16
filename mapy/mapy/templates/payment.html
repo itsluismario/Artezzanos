@@ -26,6 +26,12 @@
 
               <!-- Order preview on mobile (screens small than 991px)-->
               <div class="widget mb-3 d-lg-none">
+                <h2 class="widget-title text-center">Shipping Details</h2>
+                <div class="d-flex align-items-center pb-2 border-bottom">
+                  <div class="ps-1">
+                    <div class="d-flex justify-content-between align-items-center">{{ shippingaddress }}</div>
+                  </div>
+                </div>
                 <h2 class="widget-title">Order summary</h2>
                 {%for item in items%}
                 <div class="d-flex align-items-center pb-2 border-bottom"><a class="d-block flex-shrink-0 me-2" href="/item/{{ item.item.id }}"><img class="rounded-1" src="{{ item.item.itemPhotoComplete.url }}" width="64" alt="Product"></a>
@@ -50,6 +56,7 @@
                       <p class="fs-sm">We accept following credit cards:&nbsp;&nbsp;<img class="d-inline-block align-middle" src="{% static 'cartzilla/img/cards.png' %}" style="width: 187px;" alt="Cerdit Cards"></p>
                       <div class="credit-card-wrapper"></div>
                       <form  method="POST" class="credit-card-form row g-3">
+                        {% csrf_token %}
                         <div class="col-sm-6">
                           <input class="form-control" type="text" name="number" placeholder="Card Number" required>
                         </div>
@@ -82,9 +89,17 @@
           <!-- Sidebar-->
           <!-- Order preview on desktop (screens larger than 991px)-->
           <aside class="col-lg-4 d-none d-lg-block ps-xl-5">
+
             <hr class="d-lg-none">
             <div class="p-4 h-100 ms-auto border-start">
               <div class="widget px-lg-2 py-2 mb-3">
+                <h2 class="widget-title text-center">Shipping Details</h2>
+                <div class="d-flex align-items-center pb-2 border-bottom">
+                  <div class="ps-1">
+                    <div class="d-flex justify-content-between align-items-center">{{ shippingaddress }}</div>
+                  </div>
+                </div>
+
                 <h2 class="widget-title text-center">Order summary</h2>
                 {%for item in items%}
                 <div class="d-flex align-items-center pb-2 border-bottom"><a class="d-block flex-shrink-0 me-2" href="/item/{{ item.item.id }}"><img class="rounded-1" src="{{ item.item.itemPhotoComplete.url }}" width="64" alt="Product"></a>

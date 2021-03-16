@@ -8,7 +8,7 @@ from core.forms import UserSignUpForm, UserLoginForm, PaymentForm, ShippingForm
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 
-from core.models import Item, Artist, CartHeader, CartBody
+from core.models import Item, Artist, CartHeader, CartBody, ShippingAddress, Payment
 
 from django.conf import settings
 
@@ -197,42 +197,55 @@ def shop_cart(request):
     returnHTML.set_cookie("cookieCar",car.id)
     return returnHTML
 
+def shipping(request):
+    login_user = request.user.is_authenticated
+
+    if login_user:
+
+        form = ShippingForm()
+        car = CartHeader.objects.get(pk=request.COOKIES["cookieCar"])
+        items = CartBody.objects.filter(cartHeader=car)
+        if request.method == "POST":
+            shipping_form = ShippingForm(data=request.POST)
+
+            if shipping_form.is_valid():
+                shipping = shipping_form
+
+                ShippingAddress.user = request.user
+
+                shipping.save()
+                print('Saved!')
+                return redirect("/payment")
+
+            else:
+                print(shipping_form.errors)
+                # HERE SHOULD SEND A MESSAGE !!!!!
+                return render(request,'shipping_address.html',{
+                    'form': form,
+                    'car': car,
+                    'items': items,
+                    'errors':shipping_form.errors
+                })
+
+        return render(request,'shipping_address.html', {
+            'form': form,
+            'car': car,
+            'items': items
+            })
+    else:
+        return redirect("/login")
+
 def payment(request):
     form = PaymentForm()
+    shippingaddress = ShippingAddress.objects.get(user=request.user)
     car = CartHeader.objects.get(pk=request.COOKIES["cookieCar"])
     items = CartBody.objects.filter(cartHeader=car)
+    print(shippingaddress)
     return render(request,'payment.html', {
         'form': form,
         'car': car,
-        'items': items
-        })
-
-def shipping(request):
-    form = ShippingForm()
-    car = CartHeader.objects.get(pk=request.COOKIES["cookieCar"])
-    items = CartBody.objects.filter(cartHeader=car)
-    if request.method == "POST":
-        shipping_form = ShippingForm(data=request.POST)
-        print(shipping_form['shipping_address'])
-
-        if shipping_form.is_valid():
-            shipping = shipping_form.save(commit=False)
-            shipping.save()
-            print('Saved!')
-        else:
-            print(shipping_form.errors)
-            # HERE SHOULD SEND A MESSAGE !!!!!
-            return render(request,'shipping_address.html',{
-                'form': form,
-                'car': car,
-                'items': items,
-                'errors':shipping_form.errors
-            })
-
-    return render(request,'shipping_address.html', {
-        'form': form,
-        'car': car,
-        'items': items
+        'items': items,
+        'shippingaddress': shippingaddress
         })
 
 def user_login(request):

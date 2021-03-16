@@ -25,6 +25,7 @@
               <h2 class="h6 border-bottom pb-3 mb-3">Shipping details</h2>
               <!-- Billing detail-->
               <form method="POST" autocomplete="off">
+              {% csrf_token %}
               <div class="row pb-4 gx-4 gy-3">
                 {% if errors %}
                 <div class="alert alert-primary d-flex" role="alert">
@@ -34,35 +35,37 @@
                   <div>{{errors}}</div>
                 </div>
                 {% endif %}
+
+
                 <div class="col-sm-6">
                   <label for="mc-fn">Full name <span class='text-danger'>*</span></label>
                   {{ form.holder_name }}
                 </div>
-                <div class="col-12">
+                <div class="col-6">
                   <label for="shipping_address">Shipping address <span class='text-danger'>*</span></label>
                   {{ form.shipping_address }}
                 </div>
-                <div class="col-sm-12">
+                <div class="col-sm-6">
                   <label for="shipping_zip">Shipping Zip<span class='text-danger'>*</span></label>
                   {{ form.shipping_zip }}
                 </div>
-                <div class="col-sm-12">
+                <div class="col-sm-6">
                   <label for="phone_number">Phone number<span class='text-danger'>*</span></label>
                   {{ form.phone_number }}
                 </div>
-                <div class="col-sm-12">
+                <div class="col-sm-6">
                   <label  for="instructions">Details to find you place</label>
                   {{ form.instructions }}
 
                 </div>
-                <div class="col-sm-12">
+                <div class="col-sm-6">
                   <label for="instructions">Select your country</label>
                   {{ form.country }}
                 </div>
                 <div class="col-sm-6">
                   <label>Right now shipping is only available in USA</label>
                 </div>
-                <a class="btn btn-primary btn-shadow d-block w-100 mt-4" type="submit" href="{% url 'core:payment' %}"><i class="ci-card fs-lg me-2"></i>Proceed to Checkout</a>
+                <button class="btn btn-primary d-block w-100" type="submit">You almost get it</button>
               </div>
               </form>
 

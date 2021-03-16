@@ -71,12 +71,17 @@ class UserLoginForm(forms.ModelForm):
         model = User
         fields = ('email','password')
 
-class PaymentForm(forms.Form):
+class PaymentForm(forms.ModelForm):
     holder_name = forms.CharField(max_length=64, required=True,
                                widget= forms.TextInput
                                (attrs={'type':'text','class':'form-control',
     				                   'name':'holder_name','placeholder':'Full Name',
                                        'aria-label':'Full Name','data-msg':'Please write your name.'}))
+    card_number = forms.IntegerField(min_value=0, max_value=2, required=True,
+                                        widget= forms.TextInput
+                                        (attrs={'type':'number','class':'form-control',
+                                                'name':'expiration_month','placeholder':'Card Number',
+                                                'aria-label':'Card Number','data-msg':'Please write the card number.'}))
     expiration_month = forms.IntegerField(min_value=0, max_value=2, required=True,
                                         widget= forms.TextInput
                                         (attrs={'type':'number','class':'form-control',
@@ -93,8 +98,12 @@ class PaymentForm(forms.Form):
                                         'name':'cvc','placeholder':'CVC',
                                         'aria-label':'CVC','data-msg':'Please write the CVC.'}))
 
+    class Meta(UserCreationForm.Meta):
+        model = ShippingAddress
+        fields = ['holder_name','card_number','expiration_month','expiration_year','cvc']
 
-class ShippingForm(forms.Form):
+
+class ShippingForm(forms.ModelForm):
     holder_name = forms.CharField(max_length=64, required=True,
                                widget= forms.TextInput
                                (attrs={'type':'text','class':'form-control',
@@ -108,10 +117,10 @@ class ShippingForm(forms.Form):
 
     shipping_zip = forms.CharField(required=False,
                                     widget= forms.TextInput
-                                    (attrs={'type':'number','class':'form-control',
+                                    (attrs={'type':'text','class':'form-control',
                                             'name':'shipping_zip','placeholder':'Shipping Zip',
                                             'aria-label':'YY','data-msg':'Please write the shipping zip.'}))
-    phone_number = forms.IntegerField(min_value=0, max_value=2, required=True,
+    phone_number = forms.IntegerField(required=True,
                                         widget= forms.TextInput
                                         (attrs={'type':'number','class':'form-control',
                                                 'name':'phone_number','placeholder':'Phone number',
@@ -130,6 +139,7 @@ class ShippingForm(forms.Form):
     class Meta(UserCreationForm.Meta):
         model = ShippingAddress
         fields = ['holder_name','shipping_address','shipping_zip','phone_number','instructions','country']
+
 """""
 END MODIFICATION
 """""
