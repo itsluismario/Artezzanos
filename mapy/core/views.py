@@ -202,18 +202,27 @@ def shipping(request):
 
     if login_user:
 
-        form = ShippingForm()
         car = CartHeader.objects.get(pk=request.COOKIES["cookieCar"])
         items = CartBody.objects.filter(cartHeader=car)
+        if "id" in request.GET:
+            subobj = ShippingAddress.objects.get(pk=request.GET["id"])
+        else:
+            subobj = None
+
+        form = ShippingForm(instance=subobj)
+
         if request.method == "POST":
-            shipping_form = ShippingForm(data=request.POST)
+            shipping_form = ShippingForm(data=request.POST,instance=subobj)
 
             if shipping_form.is_valid():
-                shipping = shipping_form
+                obj = shipping_form.save(commit=False)
+                obj.user = request.user
+                obj.cartheader = car
+                obj.save()
 
-                ShippingAddress.user = request.user
+                car.user = request.user
+                car.save()
 
-                shipping.save()
                 print('Saved!')
                 return redirect("/payment")
 

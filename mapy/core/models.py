@@ -99,6 +99,8 @@ class CartBody(models.Model):
 class ShippingAddress(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)
+    cartheader = models.ForeignKey(CartHeader,
+                             on_delete=models.CASCADE)
     holder_name = models.CharField(max_length=100)
     shipping_address = models.CharField(max_length=100)
     shipping_zip = models.CharField(max_length=100)
@@ -108,8 +110,7 @@ class ShippingAddress(models.Model):
     is_delivered = models.BooleanField(default=False)
 
     def __str__(self):
-        nl = '\n'
-        return f"Address: {self.shipping_address}, {self.shipping_zip}, {self.country}.\n {nl} Phone Number: {self.phone_number}. Instructions: {self.instructions}"
+        return f"Address: {self.shipping_address}, {self.shipping_zip}, {self.country}. Phone Number: {self.phone_number}. Instructions: {self.instructions}"
 
 class Payment(models.Model):
 
