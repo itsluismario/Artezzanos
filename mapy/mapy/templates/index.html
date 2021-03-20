@@ -21,20 +21,6 @@
         <div class="col-12 py-4 p-xl-5">
 
           <h3 class="mb-4">The greatest artesans of Mexico</h3>
-          <div class="d-flex justify-content-between align-items-center flex-column flex-md-row mb-4">
-
-            <div>
-              <label class="form-labe mr-2" for="form_sort">Sort by Regions</label>
-              <select class="selectpicker" name="sort" id="form_sort" data-style="btn-selectpicker" title="">
-                <option value="sortBy_0"><a href="/index?state=Chiapas">Chiapas</a></option>
-                <option value="sortBy_1"><a href="/index?state=Jalisco">Jalisco</a></option>
-                <option value="sortBy_2"><a href="/index?state=Michoacan">Michoacan</a></option>
-                <option value="sortBy_3"><a href="/index?state=Puebla">Puebla</a></option>
-                <option value="sortBy_4"><a href="/index?state=Oaxaca">Oaxaca</a></option>
-              </select>
-            </div>
-
-          </div>
           <hr class="my-4">
 
 
@@ -45,8 +31,8 @@
             <!-- Product-->
             <div class="col-lg-3 col-md-4 col-sm-6 col-6 px-2 mb-4" data-marker-id="{{ item.id }}">
               <div class="card product-card" >
-                <a class="card-img-top d-block overflow-hidden" href="/artist/{{ item.artist.id }}"><img src="{{ item.itemPhotoComplete.url }}" alt="Product"></a>
-                <div class="card-body py-2"><a class="product-meta d-block fs-xs pb-1" href="/artist/{{ item.artist.id }}">by {{ item.artist }}</a>
+                <a class="card-img-top d-block overflow-hidden" href="/artist?artist_id={{ item.artist.id }}&&item_id={{ item.id }}"><img src="{{ item.itemPhotoComplete.url }}" alt="Product"></a>
+                <div class="card-body py-2"><a class="product-meta d-block fs-xs pb-1" href="/artist?artist_id={{ item.artist.id }}&&item_id={{ item.id }}">by {{ item.artist }}</a>
                   <h3 class="product-title fs-sm"><a href="shop-single-v1.html">{{ item.title }}</a></h3>
 
                   <div class="d-flex justify-content-between">
@@ -54,7 +40,7 @@
                     </div>
                   </div>
                 </div>
-                <hr class="d-sm-none">
+
               </div>
 
             {% endfor %}

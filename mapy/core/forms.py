@@ -34,16 +34,16 @@ class UserSignUpForm(UserCreationForm):
     password1 = forms.CharField(max_length=100,required=True,
                            widget= forms.TextInput
                            (attrs={'type':'password','class':'form-control','autocomplete':'off',
-				                   'name':'password','placeholder':'8+ caracteres requeridos',
-                                   'aria-label':'8+ caracteres requeridos','data-msg':'Please try again, invalid passowrd.',
+				                   'name':'password','placeholder':'At least 8 characters long',
+                                   'aria-label':'At least 8 characters long','data-msg':'Please try again, invalid passowrd.',
                                    'data-hs-toggle-password-options':'{"target": [".js-toggle-password-target-1", ".js-toggle-password-target-2"],"defaultClass": "tio-hidden-outlined","showClass": "tio-visible-outlined", "classChangeTarget": ".js-toggle-passowrd-show-icon-1"}'}))
 
 
     password2 = forms.CharField(max_length=100,required=True,
                            widget= forms.TextInput
                            (attrs={'type':'password','class':'form-control','autocomplete':'off',
-                                   'name':'confirmPassword','placeholder':'8+ caracteres requeridos',
-                                   'aria-label':'8+ caracteres requeridos','data-msg':'Your second password do not do not coincide with the first one.',
+                                   'name':'confirmPassword','placeholder':'At least 8 characters long',
+                                   'aria-label':'At least 8 characters long','data-msg':'Your second password do not do not coincide with the first one.',
                                    'data-hs-toggle-password-options':'{"target":[".js-toggle-password-target-1", ".js-toggle-password-target-2"],"defaultClass": "tio-hidden-outlined","showClass": "tio-visible-outlined","classChangeTarget": ".js-toggle-passowrd-show-icon-2"}'}))
 
 
@@ -109,17 +109,29 @@ class ShippingForm(forms.ModelForm):
                                (attrs={'type':'text','class':'form-control',
     				                   'name':'holder_name','placeholder':'Full Name',
                                        'aria-label':'Full Name','data-msg':'Please write your name.'}))
-    shipping_address = forms.CharField(required=True,
+    street_address = forms.CharField(required=True,
                                     widget= forms.TextInput
                                     (attrs={'type':'text','class':'form-control',
-                                    'name':'shipping_address','placeholder':'Shipping Address',
-                                    'aria-label':'Shipping Address','data-msg':'Please write address.'}))
+                                    'name':'shipping_address','placeholder':'Street Address',
+                                    'aria-label':'Street Address','data-msg':'Please write your address.'}))
+
+    city = forms.CharField(required=True,
+                                    widget= forms.TextInput
+                                    (attrs={'type':'text','class':'form-control',
+                                    'name':'city','placeholder':'City',
+                                    'aria-label':'City','data-msg':'Please write your city.'}))
+
+    state = forms.CharField(required=True,
+                                    widget= forms.TextInput
+                                    (attrs={'type':'text','class':'form-control',
+                                    'name':'state','placeholder':'State',
+                                    'aria-label':'State','data-msg':'Please write your State.'}))
 
     shipping_zip = forms.CharField(required=False,
                                     widget= forms.TextInput
                                     (attrs={'type':'text','class':'form-control',
                                             'name':'shipping_zip','placeholder':'Shipping Zip',
-                                            'aria-label':'YY','data-msg':'Please write the shipping zip.'}))
+                                            'aria-label':'YY','data-msg':'Please write your shipping zip.'}))
     phone_number = forms.IntegerField(required=True,
                                         widget= forms.TextInput
                                         (attrs={'type':'number','class':'form-control',
@@ -138,7 +150,7 @@ class ShippingForm(forms.ModelForm):
 
     class Meta(UserCreationForm.Meta):
         model = ShippingAddress
-        fields = ['holder_name','shipping_address','shipping_zip','phone_number','instructions','country']
+        fields = ['holder_name','street_address','city','state','shipping_zip','phone_number','instructions','country']
 
 """""
 END MODIFICATION

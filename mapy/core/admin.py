@@ -18,7 +18,7 @@ make_refund_accepted.short_description = 'Update orders to refund granted'
 class ShippingAddressAdmin(admin.ModelAdmin):
     list_display = [
         'user',
-        'shipping_address',
+        'street_address',
         'shipping_zip',
         'phone_number',
         'instructions',
@@ -26,7 +26,7 @@ class ShippingAddressAdmin(admin.ModelAdmin):
         'is_delivered'
     ]
     list_filter = ['is_delivered', 'country']
-    search_fields = ['user', 'shipping_address','shipping_zip']
+    search_fields = ['user', 'street_address','shipping_zip']
 
 class ItemInline(admin.TabularInline):
     model = Item

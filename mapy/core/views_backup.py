@@ -109,7 +109,7 @@ def delete_item(request):
                             'quantity': car.quantity
                             })
 
-def artist(request):
+def artist(request, artist_id):
     login_user = request.user.is_authenticated
 
     try:
@@ -123,18 +123,14 @@ def artist(request):
         else:
             car = CartHeader.objects.create(total=0,quantity=0)
     return render(request,'artist.html', {
-        "artist": Artist.objects.get(pk=request.GET["artist_id"]),
-        "items": Item.objects.select_related('artist').filter(artist=request.GET["artist_id"]),
-        'car': car,
-        "item": Item.objects.get(pk=request.GET["item_id"]),
+        "artist": Artist.objects.get(pk=artist_id),
+        "items": Item.objects.select_related('artist').filter(artist=artist_id),
+        'car': car
     })
 
-"""
-Start comment
-We are not using this def rightnow
-"""
 def item(request, item_id):
     login_user = request.user.is_authenticated
+
     try:
         car = CartHeader.objects.get(pk=request.COOKIES["cookieCar"])
     except:
@@ -149,9 +145,6 @@ def item(request, item_id):
         "item": Item.objects.get(pk=item_id),
         "car": car
     })
-"""
- End comment
-"""
 
 def shop_cart(request):
     login_user = request.user.is_authenticated
@@ -206,67 +199,6 @@ def shop_cart(request):
 
 def shipping(request):
     login_user = request.user.is_authenticated
-
-    if login_user:
-        shippingaddressess = ShippingAddress.objects.filter(user=request.user)
-        car = CartHeader.objects.get(pk=request.COOKIES["cookieCar"])
-        items = CartBody.objects.filter(cartHeader=car)
-
-        form = ShippingForm()
-
-        if request.method == "POST":
-            shipping_form = ShippingForm(data=request.POST)
-
-            if shipping_form.is_valid():
-                obj = shipping_form.save(commit=False)
-                obj.user = request.user
-                obj.cartheader = car
-                obj.save()
-
-                car.user = request.user
-                car.save()
-
-                print('Saved!')
-
-                return redirect("/payment"+ '?id=' + str(obj.id))
-
-            else:
-                print(shipping_form.errors)
-                # HERE SHOULD SEND A MESSAGE !!!!!
-                return render(request,'shipping_address.html',{
-                    'form': form,
-                    'car': car,
-                    'items': items,
-                    'errors':shipping_form.errors,
-                    'shippingaddressess': shippingaddressess
-                })
-
-        return render(request,'shipping_address.html', {
-            'form': form,
-            'car': car,
-            'items': items,
-            'shippingaddressess': shippingaddressess
-            })
-    else:
-        return redirect("/login")
-
-def payment(request):
-    form = PaymentForm()
-    errors = None
-    car = CartHeader.objects.get(pk=request.COOKIES["cookieCar"])
-    items = CartBody.objects.filter(cartHeader=car)
-    if 'id' in request.GET:
-        shippingaddress = ShippingAddress.objects.get(pk=request.GET["id"])
-
-    return render(request,'payment.html', {
-        'form': form,
-        'car': car,
-        'items': items,
-        'shippingaddress': shippingaddress,
-        })
-
-def edit(request):
-    login_user = request.user.is_authenticated
     shippingaddressess = ShippingAddress.objects.filter(user=request.user)
     if login_user:
 
@@ -293,12 +225,12 @@ def edit(request):
                 car.save()
 
                 print('Saved!')
-                return redirect("/shipping")
+                return redirect("/payment")
 
             else:
                 print(shipping_form.errors)
                 # HERE SHOULD SEND A MESSAGE !!!!!
-                return render(request,'edit_address.html',{
+                return render(request,'shipping_address.html',{
                     'form': form,
                     'car': car,
                     'items': items,
@@ -306,7 +238,7 @@ def edit(request):
                     'shippingaddressess': shippingaddressess
                 })
 
-        return render(request,'edit_address.html', {
+        return render(request,'shipping_address.html', {
             'form': form,
             'car': car,
             'items': items,
@@ -314,6 +246,19 @@ def edit(request):
             })
     else:
         return redirect("/login")
+
+def payment(request):
+    form = PaymentForm()
+    shippingaddress = ShippingAddress.objects.get(user=request.user)
+    car = CartHeader.objects.get(pk=request.COOKIES["cookieCar"])
+    items = CartBody.objects.filter(cartHeader=car)
+
+    return render(request,'payment.html', {
+        'form': form,
+        'car': car,
+        'items': items,
+        'shippingaddress': shippingaddress
+        })
 
 def user_login(request):
     form = UserLoginForm()

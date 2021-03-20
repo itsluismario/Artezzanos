@@ -43,13 +43,13 @@ class Community(models.Model):
         return f"{self.community}"
 
 class Artist(models.Model):
-    artistName = models.CharField(max_length=100, blank=False, null=False)
-    artistPhoto = models.FileField(upload_to='profile_pics',blank=False)
+    artistName = models.CharField(max_length=100)
+    artistPhoto = models.FileField(upload_to='profile_pics')
     artistRegion = models.ForeignKey(Region, on_delete=models.CASCADE)
     artistCommunity = models.ForeignKey(Community, on_delete=models.CASCADE)
-    artistText = models.TextField(max_length=1000, blank=False, null=False)
-    lat = models.DecimalField(max_digits=10, decimal_places=7, blank=False, null=False)
-    long = models.DecimalField(max_digits=10, decimal_places=7, blank=False, null=False)
+    artistText = models.TextField(max_length=1000)
+    lat = models.DecimalField(max_digits=10, decimal_places=7)
+    long = models.DecimalField(max_digits=10, decimal_places=7)
 
     def __str__(self):
         return f"{self.artistName} from {self.artistRegion}"
@@ -102,7 +102,9 @@ class ShippingAddress(models.Model):
     cartheader = models.ForeignKey(CartHeader,
                              on_delete=models.CASCADE)
     holder_name = models.CharField(max_length=100)
-    shipping_address = models.CharField(max_length=100)
+    street_address = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
+    city = models.CharField(max_length=100)
     shipping_zip = models.CharField(max_length=100)
     phone_number = models.DecimalField(max_digits=64,decimal_places=0)
     instructions = models.CharField(max_length=100)
@@ -110,7 +112,7 @@ class ShippingAddress(models.Model):
     is_delivered = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"Address: {self.shipping_address}, {self.shipping_zip}, {self.country}. Phone Number: {self.phone_number}. Instructions: {self.instructions}"
+        return f"Address: {self.street_address}, {self.shipping_zip}, {self.country}. Phone Number: {self.phone_number}. Instructions: {self.instructions}"
 
 class Payment(models.Model):
 
