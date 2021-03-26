@@ -143,8 +143,8 @@ AUTHENTICATION_BACKENDS = (
     'mapy.backends.EmailAuthBackend'
 )
 
-# Open pay
+# OPEN PAY
 openpay.api_key = "sk_84c6e2802b2e450d963385e8cd891124"
 openpay.verify_ssl_certs = False
 openpay.merchant_id = "mkjy3yttod6hdn9wkxje"
-openpay.production = True  # By default this works in sandbox mode
+openpay.production = False  # By default this works in sandbox mode

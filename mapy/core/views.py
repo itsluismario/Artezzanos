@@ -319,13 +319,46 @@ def payment(request):
 
     if request.method == "POST":
 
-        openpay.Token.create(
-           card_number=  request.POST["card_number"],
-           holder_name=request.POST["holder_name"],
-           expiration_year=request.POST["expiration_year"],
-           expiration_month=request.POST["expiration_year"],
-           cvv2=request.POST["cvc"]
-           )
+        try:
+            # Crear un usuario donde se guarda en customer
+            customer = openpay.Customer.create(
+            name="Juan",
+            email="somebody@example.com",
+            address={
+                "city": "Queretaro",
+                "state":"Queretaro",
+                "line1":"Calle de las penas no 10",
+                "postal_code":"76000",
+                "line2":"col. san pablo",
+                "line3":"entre la calle de la alegria y la calle del llanto",
+                "country_code":"MX"
+            },
+            last_name="Perez",
+            phone_number="44209087654"
+            )
+            # Create a card for the customer
+            card = customer.cards.create(
+            	card_number="4111111111111111",
+            	holder_name="Juan Perez Ramirez",
+            	expiration_year="23",
+            	expiration_month="12",
+            	cvv2="110"
+            )
+            # create a transfer for the customer
+            charge = customer.charges.create(
+                source_id=card.id,
+                method="card", #???
+                amount="100",
+                description='Cargo de Prueba', #Product
+                redirect_url='http://www.openpay.mx/index.html', # Thanks page
+                device_session_id="cs345ds32dFdfgE43Sa", # csrf_token
+            )
+
+            print(request.POST["csrfmiddlewaretoken"])
+
+        except Exception as e:
+            print(e)
+            raise
     else:
         print("Payment Error")
 
