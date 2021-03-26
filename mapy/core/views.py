@@ -8,7 +8,7 @@ from core.forms import UserSignUpForm, UserLoginForm, PaymentForm, ShippingForm
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 
-from core.models import Item, Artist, CartHeader, CartBody, ShippingAddress, Payment
+from core.models import Item, Artist, CartHeader, CartBody, ShippingAddress, Payment, Category, SubCategory, About, TeamMemeber, FAQ
 
 from django.conf import settings
 
@@ -16,11 +16,51 @@ from django.contrib.auth.forms import AuthenticationForm
 
 from django.core.paginator import Paginator
 
+import openpay
+
+import itertools
 
 User = settings.AUTH_USER_MODEL
 
+def categories(request):
+    login_user = request.user.is_authenticated
+
+    categories = Category.objects.filter().all()
+    subcategories = SubCategory.objects.filter().all()
+
+    try:
+        car = CartHeader.objects.get(pk=request.COOKIES["cookieCar"])
+    except:
+        car = None
+    # Reminder: You can use exist() when you have first()
+    if car == None:
+        if login_user:
+            car = CartHeader.objects.create(user=request.user,total=0,quantity=0)
+        else:
+            car = CartHeader.objects.create(total=0,quantity=0)
+
+    if 'subcategory_id' in request.GET:
+        subobj = SubCategory.objects.get(pk=request.GET["subcategory_id"])
+        obj = Item.objects.filter(subcategory=SubCategory.objects.get(pk=request.GET["subcategory_id"]))
+    else:
+        obj =  Item.objects.all()
+
+    paginate = Paginator(obj,4)
+    page_number = request.GET.get('page')
+    page_obj = paginate.get_page(page_number)
+    return render(request,'categories.html', {
+        'items': page_obj,
+        'car': car,
+        'categories': categories,
+        'subcategories': subcategories,
+        'subobj': subobj,
+    })
+
 def index(request):
     login_user = request.user.is_authenticated
+
+    categories = Category.objects.filter().all()
+    subcategories = SubCategory.objects.filter().all()
 
     try:
         car = CartHeader.objects.get(pk=request.COOKIES["cookieCar"])
@@ -34,12 +74,15 @@ def index(request):
             car = CartHeader.objects.create(total=0,quantity=0)
 
     obj =  Item.objects.all()
+
     paginate = Paginator(obj,4)
     page_number = request.GET.get('page')
     page_obj = paginate.get_page(page_number)
     return render(request,'index.html', {
-        "items": page_obj,
-        'car': car
+        'items': page_obj,
+        'car': car,
+        'categories': categories,
+        'subcategories': subcategories,
     })
 
 def update_item(request):
@@ -111,6 +154,8 @@ def delete_item(request):
 
 def artist(request):
     login_user = request.user.is_authenticated
+    categories = Category.objects.filter().all()
+    subcategories = SubCategory.objects.filter().all()
 
     try:
         car = CartHeader.objects.get(pk=request.COOKIES["cookieCar"])
@@ -124,9 +169,11 @@ def artist(request):
             car = CartHeader.objects.create(total=0,quantity=0)
     return render(request,'artist.html', {
         "artist": Artist.objects.get(pk=request.GET["artist_id"]),
-        "items": Item.objects.select_related('artist').filter(artist=request.GET["artist_id"]),
+        "items": Item.objects.select_related('artist').filter(artist=request.GET["artist_id"]).exclude(pk=request.GET["item_id"]),
         'car': car,
         "item": Item.objects.get(pk=request.GET["item_id"]),
+        'categories': categories,
+        'subcategories': subcategories,
     })
 
 """
@@ -155,6 +202,8 @@ def item(request, item_id):
 
 def shop_cart(request):
     login_user = request.user.is_authenticated
+    categories = Category.objects.filter().all()
+    subcategories = SubCategory.objects.filter().all()
 
     try:
         car = CartHeader.objects.get(pk=request.COOKIES["cookieCar"])
@@ -199,13 +248,17 @@ def shop_cart(request):
 
     returnHTML = render(request,'shop-cart.html', {
         'car': car,
-        'items': items
+        'items': items,
+        'categories': categories,
+        'subcategories': subcategories,
     })
     returnHTML.set_cookie("cookieCar",car.id)
     return returnHTML
 
 def shipping(request):
     login_user = request.user.is_authenticated
+    categories = Category.objects.filter().all()
+    subcategories = SubCategory.objects.filter().all()
 
     if login_user:
         shippingaddressess = ShippingAddress.objects.filter(user=request.user)
@@ -238,19 +291,25 @@ def shipping(request):
                     'car': car,
                     'items': items,
                     'errors':shipping_form.errors,
-                    'shippingaddressess': shippingaddressess
+                    'shippingaddressess': shippingaddressess,
+                    'categories': categories,
+                    'subcategories': subcategories
                 })
 
         return render(request,'shipping_address.html', {
             'form': form,
             'car': car,
             'items': items,
-            'shippingaddressess': shippingaddressess
+            'shippingaddressess': shippingaddressess,
+            'categories': categories,
+            'subcategories': subcategories
             })
     else:
         return redirect("/login")
 
 def payment(request):
+    categories = Category.objects.filter().all()
+    subcategories = SubCategory.objects.filter().all()
     form = PaymentForm()
     errors = None
     car = CartHeader.objects.get(pk=request.COOKIES["cookieCar"])
@@ -258,14 +317,31 @@ def payment(request):
     if 'id' in request.GET:
         shippingaddress = ShippingAddress.objects.get(pk=request.GET["id"])
 
+    if request.method == "POST":
+
+        openpay.Token.create(
+           card_number=  request.POST["card_number"],
+           holder_name=request.POST["holder_name"],
+           expiration_year=request.POST["expiration_year"],
+           expiration_month=request.POST["expiration_year"],
+           cvv2=request.POST["cvc"]
+           )
+    else:
+        print("Payment Error")
+
     return render(request,'payment.html', {
         'form': form,
         'car': car,
         'items': items,
         'shippingaddress': shippingaddress,
+        'errors':form.errors,
+        'categories': categories,
+        'subcategories': subcategories
         })
 
 def edit(request):
+    categories = Category.objects.filter().all()
+    subcategories = SubCategory.objects.filter().all()
     login_user = request.user.is_authenticated
     shippingaddressess = ShippingAddress.objects.filter(user=request.user)
     if login_user:
@@ -303,19 +379,25 @@ def edit(request):
                     'car': car,
                     'items': items,
                     'errors':shipping_form.errors,
-                    'shippingaddressess': shippingaddressess
+                    'shippingaddressess': shippingaddressess,
+                    'categories': categories,
+                    'subcategories': subcategories,
                 })
 
         return render(request,'edit_address.html', {
             'form': form,
             'car': car,
             'items': items,
-            'shippingaddressess': shippingaddressess
+            'shippingaddressess': shippingaddressess,
+            'categories': categories,
+            'subcategories': subcategories,
             })
     else:
         return redirect("/login")
 
 def user_login(request):
+    categories = Category.objects.filter().all()
+    subcategories = SubCategory.objects.filter().all()
     form = UserLoginForm()
     # If the user is not log in send to "/"
     if not request.user.is_authenticated:
@@ -352,10 +434,14 @@ def user_login(request):
                 print(form.errors)
 
     return render(request,'login.html', {
-        'form': form
+        'form': form,
+        'categories': categories,
+        'subcategories': subcategories
         })
 
 def user_signup(request):
+    categories = Category.objects.filter().all()
+    subcategories = SubCategory.objects.filter().all()
     form = UserSignUpForm()
     # If the user is logged in send to "/"
     if not request.user.is_authenticated:
@@ -373,7 +459,9 @@ def user_signup(request):
                 if user.save():
                      return render(request,'signup.html',{
                          'form':form,
-                         'errors':'The user already exist'
+                         'errors':'The user already exist',
+                         'categories': categories,
+                         'subcategories': subcategories,
                      })
                 else:
                     user.set_password(user.password)
@@ -390,12 +478,16 @@ def user_signup(request):
                 # HERE SHOULD SEND A MESSAGE !!!!!
                 return render(request,'signup.html',{
                     'form':form,
-                    'errors':user_form.errors
+                    'errors':user_form.errors,
+                    'categories': categories,
+                    'subcategories': subcategories,
                 })
 
         form = UserSignUpForm()
         return render(request,"signup.html",{
-            'form': form
+            'form': form,
+            'categories': categories,
+            'subcategories': subcategories,
         })
     else:
         return redirect( "/" )
@@ -404,3 +496,18 @@ def user_signup(request):
 def user_logout(request):
     do_logout(request)
     return HttpResponseRedirect(reverse('core:index'))
+
+def about(request):
+    categories = Category.objects.filter().all()
+    subcategories = SubCategory.objects.filter().all()
+    about = About.objects.get(pk=1)
+    members = TeamMemeber.objects.filter().all()
+    faqs = FAQ.objects.filter().all()
+
+    return render(request,'about.html', {
+        'about': about,
+        'members': members,
+        'faqs': faqs,
+        'categories': categories,
+        'subcategories': subcategories,
+        })

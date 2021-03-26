@@ -34,8 +34,15 @@ class Region(models.Model):
 
 class Category(models.Model):
     category = models.CharField(max_length=100)
+    categoryPhoto = models.FileField(upload_to='categories')
     def __str__(self):
         return f"{self.category}"
+
+class SubCategory(models.Model):
+    subcategory = models.CharField(max_length=100)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    def __str__(self):
+        return f"{self.subcategory}"
 
 class Community(models.Model):
     community = models.CharField(max_length=100)
@@ -47,7 +54,7 @@ class Artist(models.Model):
     artistPhoto = models.FileField(upload_to='profile_pics')
     artistRegion = models.ForeignKey(Region, on_delete=models.CASCADE)
     artistCommunity = models.ForeignKey(Community, on_delete=models.CASCADE)
-    artistText = models.TextField(max_length=1000)
+    artistText = models.TextField()
     lat = models.DecimalField(max_digits=10, decimal_places=7)
     long = models.DecimalField(max_digits=10, decimal_places=7)
 
@@ -67,7 +74,7 @@ class Item(models.Model):
     hours = models.IntegerField()
     discount_price = models.FloatField(blank=True, null=True)
     description = models.TextField()
-    artType = models.ForeignKey(Category, on_delete=models.CASCADE)
+    subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.id} {self.title} by {self.artist}"
@@ -125,3 +132,29 @@ class Payment(models.Model):
 
     def __str__(self):
         return self.user.username
+
+class About(models.Model):
+    title = models.TextField(max_length=100)
+    firstContent = models.TextField(max_length=5000)
+    subtitle = models.TextField(max_length=100)
+    secondContent = models.TextField(max_length=5000)
+    contentPhoto = models.FileField(upload_to='about_photo')
+
+    def __str__(self):
+        return self.title
+
+class TeamMemeber(models.Model):
+    name = models.TextField(max_length=100)
+    job = models.TextField(max_length=100)
+    email = models.EmailField()
+    profile = models.FileField(upload_to='profile')
+
+    def __str__(self):
+        return f'{self.name} {self.job}'
+
+class FAQ(models.Model):
+    question = models.TextField(max_length=100)
+    answer = models.TextField(max_length=5000)
+
+    def __str__(self):
+        return f'{self.question} {self.answer}'

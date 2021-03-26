@@ -2,25 +2,13 @@
 {% load static %}
   {% block content %}
 
-  <!-- Hero section-->
-  <section class="bg-position-top-center bg-repeat-0 pt-5 pb-5 py-md-10 tns-carousel tns-controls-lg" style="background-image: url('{% static 'img/landingPhoto.jpg'%}');">
-    <div class="container pt-4 mb-3 mb-lg-0">
-      <div class="row">
-        <div class="col-lg-5 col-md-6 col-sm-8 offset-lg-1">
-          <h1 class="text-light mb-5">You can change <br>the life of the greatest <br> artists of Mexico</h1>
-          <p class="fs-lg text-light pb-3 from-start delay-2">50% of the sales go to the masters. <br>To know more about our project click in the botton</p>
-          <div class="d-flex align-items-center mb-5"><a class="btn btn-primary me-grid-gutter" href="{% url 'core:about' %}">Click here!</a></div>
-        </div>
-      </div>
-    </div>
-  </section>
 
     <div class="container-fluid">
 
       <div class="row">
         <div class="col-12 py-4 p-xl-5">
 
-          <h3 class="mb-4">The greatest artesans of Mexico</h3>
+          <h3 class="mb-4">{{ subobj }} </h3>
           <hr class="my-4">
 
 

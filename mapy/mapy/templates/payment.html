@@ -38,7 +38,7 @@
                 <div class="d-flex align-items-center pb-2 border-bottom">
                   <div class="ps-1">
                     <div class="d-flex justify-content-between align-items-center">{{ shippingaddress }}</div>
-                    <a href="/shipping?id={{ shippingaddress.id }}">Edit</a>
+                    <a href="/shipping?id={{ shippingaddress.id }}">Change address</a>
                   </div>
                 </div>
                 <h2 class="widget-title text-center">Order summary</h2>
@@ -67,7 +67,7 @@
                       <form  method="POST" class="credit-card-form row g-3">
                         {% csrf_token %}
                         <div class="col-sm-6">
-                          <input class="form-control" type="text" name="number" placeholder="Card Number" required>
+                          {{ form.card_number }}
                         </div>
                         <div class="col-sm-6">
                           {{ form.holder_name }}
@@ -106,7 +106,7 @@
                 <div class="d-flex align-items-center pb-2">
                   <div class="ps-1">
                     <div class="d-flex justify-content-between align-items-center">Address: {{ shippingaddress.street_address }}, {{ shippingaddress.city }}, {{ shippingaddress.state }}, {{ shippingaddress.shipping_zip }}, {{ shippingaddress.country }}  <br> Phone: {{ shippingaddress.shipping_zip }} <br> Instructions: {{ shippingaddress.instructions }} <br> Reciever: {{ shippingaddress.holder_name}}</div>
-                    <a href="/shipping?id={{ shippingaddress.id }}">Edit</a>
+                    <a href="/shipping?id={{ shippingaddress.id }}">Change address</a>
                   </div>
                 </div>
 

@@ -41,8 +41,8 @@
                   <div class="col-lg-4 col-md-0 col-sm-0 col-0">
                     <div >
                       <!-- Item -->
-                      <h6 class="card-title">{{item.title}}</h6>
-                      <p class="card-text text-muted">{{item.artType}}<br>${{ item.price }}<br><span class="text-primary">{{ item.hours }} hours spent on this masterpiece </span></p>
+                      <h6>{{item.title}}</h6>
+                      <p class="card-text">{{item.artType}}<br>${{ item.price }}<br><span class="text-primary">{{ item.hours }} hours worked</span></p>
                       <p class="card-text fs-sm">{{item.description}}</p>
                       <!-- Pill outline button -->
                       <a href="/cart?item={{ item.id }}" class="btn btn-outline-primary rounded-pill">Add To My Cart</a>
@@ -50,32 +50,8 @@
                   </div>
                 </div>
 
-
-
-                <!-- Artist grid-->
-                <div class="row pt-3 mx-n2">
-                <!-- Artist Photo-->
-                <div class="col-lg-3 col-md-4 col-sm-3 col-3 px-2 mb-4" data-marker-id="{{ item.id }}">
-                  <div class="card" >
-                    <a class="card-img-top d-block overflow-hidden" style="border-radius: 5px;"><img src="{{ artist.artistPhoto.url }}"></a>
-                  </div>
-                  </div>
-
-                  <!-- Artist Text-->
-                  <div class="col-lg-9 col-md-8 col-sm-9 col-9 px-2 mb-4" data-marker-id="{{ item.id }}">
-                    <div class="card " >
-                      <div class="card-body py-2">
-                        <h2 class="product-title ">{{ artist.artistName }}</h2>
-                        <div class="d-flex justify-content-between">
-                          <div class="product-price">{{ artist.artistText }}</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <hr class="d-sm-none">
-                </div>
-
-                <h5 class="mb-4">More masterpieces by {{ artist.artistName }}</h5>
+                {% if items %}
+                <h5 class="mb-4 pt-3">More masterpieces by {{ artist.artistName }}</h5>
                 <hr>
 
                 <!-- Products grid-->
@@ -96,6 +72,34 @@
                     </div>
                   {% endfor %}
                 </div>
+                {% endif %}
+
+                <!-- Artist grid-->
+                <div class="row pt-3 mx-n2">
+                <!-- Artist Photo-->
+                <div class="col-lg-3 col-md-4 col-sm-3 col-3 px-2 mb-4" data-marker-id="{{ item.id }}">
+                  <div class="card" >
+                    <a class="card-img-top d-block overflow-hidden" style="border-radius: 5px;"><img src="{{ artist.artistPhoto.url }}"></a>
+                  </div>
+                  </div>
+
+                  <!-- Artist Text-->
+                  <div class="col-lg-9 col-md-8 col-sm-9 col-9 px-2 mb-4" data-marker-id="{{ item.id }}">
+                    <div class="card " >
+                      <div class="card-body py-2">
+                        <h4 class="product-title py-3">{{ artist.artistName }}</h4>
+                        <div class="d-flex justify-content-between">
+                          <div class="product-price">{{ artist.artistText }}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <hr class="d-sm-none">
+                </div>
+
+
+
 
 
 
@@ -110,7 +114,6 @@
 
 
   {% endblock %}
-
 
 
 

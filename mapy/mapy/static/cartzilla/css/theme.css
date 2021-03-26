@@ -1,6 +1,10 @@
-/* .remove {
-  visibility: hidden;
-} */
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 60%;
+}
 
 @charset "UTF-8";
 /*
@@ -79,7 +83,7 @@ hr:not([size]) {
 
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   margin-top: 0;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0;
   font-weight: 500;
   line-height: 1.2;
   color: #373f50;
@@ -8141,6 +8145,10 @@ fieldset:disabled .btn {
 
 .bg-secondary {
   background-color: #f6f9fc !important;
+}
+
+.bg-grey {
+  background-color: #F7F7F7 !important;
 }
 
 .bg-success {

@@ -1,0 +1,54 @@
+{% extends 'layout.html' %}
+{% load static %}
+  {% block content %}
+    <main class="container-fluid px-0">
+
+      <!-- Row: why?-->
+      <section class="row g-0 py-2">
+        <!-- <div class="col-md-6 bg-position-center bg-size-cover bg-secondary" style="min-height: 15rem; background-image: url('{{ about.contentPhoto.url }}');"></div> -->
+        <div class="col-md-6 bg-position-center bg-size-cover bg-secondary" style="min-height: 27rem; background-image: url('{{ about.contentPhoto.url }}');"></div>
+        <div class="col-md-6 px-3 px-md-5 py-5">
+          <div class="mx-auto py-lg-5" style="max-width: 35rem;">
+            <h2 class="h3 pb-3"> {{ about.subtitle }} </h2>
+            {{ about.firstContent|linebreaks}}
+          </div>
+        </div>
+      </section>
+
+      <!-- Row: what?-->
+      <section class="row g-0">
+        <div class="col-md-12 px-3 px-md-5 ">
+          <div class="mx-auto py-lg-5" style="max-width: 60rem;">
+            <h2 class="h3 pb-3">{{ about.title }} </h2>
+            {{ about.secondContent|linebreaks }}
+          </div>
+        </div>
+      </section>
+
+      <!-- Row: Team-->
+      {% if members %}
+      <section class="row g-0">
+        <div class="col-md-12 px-3 px-md-5">
+          <div class="mx-auto" style="max-width: 60rem;">
+            <h2 class="h3 pb-3">Our team</h2>
+            <p class="fs-sm text-muted">People behind the magic</p>
+            {% for memeber in members %}
+            <div class="row pt-3">
+              <div class="col-lg-4 col-sm-6 mb-grid-gutter">
+                <div class="d-flex align-items-center"><img class="rounded-circle" src="{{ memeber.profile.url }}" width="200" alt="{{ memeber.name }}">
+                  <div class="ps-3">
+                    <h6 class="fs-base pt-1 mb-1">{{ memeber.name }}</h6>
+                    <p class="fs-ms text-muted mb-0">{{ memeber.job }}</p><a class="nav-link-style fs-ms text-nowrap" href="mailto:{{ memeber.email }}"><i class="ci-mail me-2"></i>{{ memeber.email }}</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+
+          </div>
+        </div>
+      </section>
+      {% endif %}
+
+    </main>
+  {% endblock %}

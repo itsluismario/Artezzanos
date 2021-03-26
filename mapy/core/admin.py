@@ -1,6 +1,6 @@
 from django.contrib import admin
 # Register your models here.
-from .models import Artist, Item, Payment, ShippingAddress, UserProfile, CartHeader, CartBody, Region, Category, Community
+from .models import Artist, Item, Payment, ShippingAddress, UserProfile, CartHeader, CartBody, Region, Category, SubCategory, Community, About, TeamMemeber, FAQ
 
 
 from django.contrib.auth.admin import UserAdmin
@@ -36,17 +36,25 @@ class ArtistInline(admin.TabularInline):
     model = Artist
     extra = 1
 
+class SubCategoryInline(admin.TabularInline):
+    model = SubCategory
+    extra = 1
+
 class CommunityAdmin(admin.ModelAdmin):
     inlines = [ArtistInline,]
 
 class RegionAdmin(admin.ModelAdmin):
     inlines = [ArtistInline,]
 
-class CategoryAdmin(admin.ModelAdmin):
+class SubCategoryAdmin(admin.ModelAdmin):
     inlines = [ItemInline,]
 
+class CategoryAdmin(admin.ModelAdmin):
+    inlines = [SubCategoryInline,]
+
 admin.site.register(Region,RegionAdmin)
-admin.site.register(Category,CategoryAdmin)
+admin.site.register(Category, CategoryAdmin)
+admin.site.register(SubCategory,SubCategoryAdmin)
 admin.site.register(Community,CommunityAdmin)
 admin.site.register(Artist)
 admin.site.register(Item)
@@ -55,3 +63,6 @@ admin.site.register(CartBody)
 admin.site.register(Payment)
 admin.site.register(ShippingAddress, ShippingAddressAdmin)
 admin.site.register(UserProfile)
+admin.site.register(About)
+admin.site.register(TeamMemeber)
+admin.site.register(FAQ)
