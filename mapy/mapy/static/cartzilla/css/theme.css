@@ -8060,15 +8060,15 @@ fieldset:disabled .btn {
 }
 
 .text-primary {
-  color: #fe696a !important;
+  color: #fe3638 !important;
 }
 
 .text-accent {
-  color: #4e54c8 !important;
+  color: #fe3638 !important;
 }
 
 .text-secondary {
-  color: #f3f5f9 !important;
+  color: #121439 !important;
 }
 
 .text-success {
@@ -13884,8 +13884,8 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 .btn-primary:hover, .btn-primary:active, .btn-primary:focus, .btn-primary.active, .btn-primary.show {
-  border-color: #fe3638;
-  background-color: #fe3638;
+  border-color: #FF5A60;
+  background-color: #FF5A60;
 }
 
 .btn-accent:hover, .btn-accent:active, .btn-accent:focus, .btn-accent.active, .btn-accent.show {

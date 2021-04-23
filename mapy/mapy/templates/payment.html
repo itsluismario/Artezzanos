@@ -17,7 +17,7 @@
 
     <div class="container mb-5 pb-3">
       <div class="bg-light shadow-lg rounded-3 overflow-hidden">
-        <div class="row">
+        <div class="row" style="margin-bottom: 20px;"">
           <!-- Content-->
           <section class="col-lg-8 pt-2 pt-lg-4 pb-4 mb-3">
             <div class="pt-2 px-4 pe-lg-0 ps-xl-5">
@@ -46,7 +46,7 @@
                 <div class="d-flex align-items-center pb-2 border-bottom"><a class="d-block flex-shrink-0 me-2" href="/artist?artist_id={{ item.artist.id }}&&item_id={{ item.id }}"><img class="rounded-1" src="{{ item.item.itemPhotoComplete.url }}" width="64" alt="Product"></a>
                   <div class="ps-1">
                     <h6 class="widget-product-title"><a href="/artist?artist_id={{ item.artist.id }}&&item_id={{ item.id }}">{{ item.item.title }}</a></h6>
-                    <div class="widget-product-meta"><span class="text-accent border-end pe-2 me-2">$ {{ item.item.price }} X ({{ item.quantityByItems }}) </div>
+                    <div class="widget-product-meta"><span class="border-end pe-2 me-2">$ {{ item.item.price }} X ({{ item.quantityByItems }}) </div>
                   </div>
                 </div>
                 {%endfor%}
@@ -72,13 +72,13 @@
                         <div class="col-sm-6">
                           {{ form.holder_name }}
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col-sm-2 col-6">
                           {{ form.expiration_month }}
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col-sm-2 col-6">
                           {{ form.expiration_year }}
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col-sm-2 col-6">
                           {{ form.cvc }}
                         </div>
                         <div class="col-sm-6">
@@ -115,7 +115,7 @@
                 <div class="d-flex align-items-center pb-2 border-bottom"><a class="d-block flex-shrink-0 me-2" href="/artist?artist_id={{ item.artist.id }}&&item_id={{ item.id }}"><img class="rounded-1" src="{{ item.item.itemPhotoComplete.url }}" width="64" alt="Product"></a>
                   <div class="ps-1">
                     <h6 class="widget-product-title"><a href="/artist?artist_id={{ item.artist.id }}&&item_id={{ item.id }}">{{ item.item.title }}</a></h6>
-                    <div class="widget-product-meta"><span class="text-accent pe-2 me-2">$ {{ item.item.price }} X ({{ item.quantityByItems }})</span></div>
+                    <div class="widget-product-meta"><span class="pe-2 me-2">$ {{ item.item.price }} X ({{ item.quantityByItems }})</span></div>
                   </div>
                 </div>
                 {%endfor%}

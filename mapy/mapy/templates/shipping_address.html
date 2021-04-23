@@ -32,7 +32,7 @@
                     <h4 class="h6">Your addressess:</h4>
                     <ul class="list-unstyled fs-sm">
                       {% for shippingaddress in shippingaddressess %}
-                      <li><span class="text-muted ">Address:&nbsp;</span>{{ shippingaddress.street_address }}, {{ shippingaddress.city }}, {{ shippingaddress.state }}, {{ shippingaddress.shipping_zip }}, {{ shippingaddress.country }} <a class="border-end" href="/edit?id={{ shippingaddress.id }}">Edit&nbsp;</a> <a  class="text-accent" href="/payment?id={{ shippingaddress.id }}">Send to this address</a></li>
+                      <li><span class="text-muted ">Address:&nbsp;</span>{{ shippingaddress.street_address }}, {{ shippingaddress.city }}, {{ shippingaddress.state }}, {{ shippingaddress.shipping_zip }}, {{ shippingaddress.country }} <a class="border-end" href="/edit?id={{ shippingaddress.id }}">Edit&nbsp;</a> <a href="/payment?id={{ shippingaddress.id }}">Send to this address&nbsp;</a></li>
                       {% endfor %}
                     </ul>
                   </div>
@@ -102,7 +102,7 @@
                 <div class="d-flex align-items-center pb-2 border-bottom"><a class="d-block flex-shrink-0 me-2" href="/artist?artist_id={{ item.artist.id }}&&item_id={{ item.id }}"><img class="rounded-1" src="{{ item.item.itemPhotoComplete.url }}" width="64" alt="Product"></a>
                   <div class="ps-1">
                     <h6 class="widget-product-title"><a href="/artist?artist_id={{ item.artist.id }}&&item_id={{ item.id }}">{{ item.item.title }}</a></h6>
-                    <div class="widget-product-meta"><span class="text-accent pe-2 me-2">$ {{ item.item.price }} X ({{ item.quantityByItems }})</span></div>
+                    <div class="widget-product-meta"><span class="pe-2 me-2">$ {{ item.item.price }} X ({{ item.quantityByItems }})</span></div>
                   </div>
                 </div>
                 {%endfor%}
@@ -123,7 +123,7 @@
                 <div class="d-flex align-items-center pb-2 border-bottom"><a class="d-block flex-shrink-0 me-2" href="/artist?artist_id={{ item.artist.id }}&&item_id={{ item.id }}"><img class="rounded-1" src="{{ item.item.itemPhotoComplete.url }}" width="64" alt="Product"></a>
                   <div class="ps-1">
                     <h6 class="widget-product-title"><a href="/artist?artist_id={{ item.artist.id }}&&item_id={{ item.id }}">{{ item.item.title }}</a></h6>
-                    <div class="widget-product-meta"><span class="text-accent pe-2 me-2">$ {{ item.item.price }} X ({{ item.quantityByItems }})</span></div>
+                    <div class="widget-product-meta"><span class="pe-2 me-2">$ {{ item.item.price }} X ({{ item.quantityByItems }})</span></div>
                   </div>
                 </div>
                 {%endfor%}
