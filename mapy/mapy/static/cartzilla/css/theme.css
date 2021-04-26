@@ -7453,6 +7453,10 @@ fieldset:disabled .btn {
   margin-bottom: 0.5rem !important;
 }
 
+.mb-6 {
+  margin-bottom: 6rem !important;
+}
+
 .mb-10 {
   margin-bottom: 10rem !important;
 }
@@ -8060,7 +8064,7 @@ fieldset:disabled .btn {
 }
 
 .text-primary {
-  color: #fe3638 !important;
+  color: #fe696a !important;
 }
 
 .text-accent {

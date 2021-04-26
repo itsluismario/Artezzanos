@@ -15,9 +15,9 @@
     </div>
 
 
-    <div class="container mb-5 pb-3">
+    <div class="container mb-6 pb-3">
       <div class="bg-light shadow-lg rounded-3 overflow-hidden">
-        <div class="row" style="margin-bottom: 20px;"">
+        <div class="row">
           <!-- Content-->
           <section class="col-lg-8 pt-2 pt-lg-4 pb-4 mb-3">
             <div class="pt-2 px-4 pe-lg-0 ps-xl-5">
@@ -43,9 +43,9 @@
                 </div>
                 <h2 class="widget-title text-center">Order summary</h2>
                 {%for item in items%}
-                <div class="d-flex align-items-center pb-2 border-bottom"><a class="d-block flex-shrink-0 me-2" href="/artist?artist_id={{ item.artist.id }}&&item_id={{ item.id }}"><img class="rounded-1" src="{{ item.item.itemPhotoComplete.url }}" width="64" alt="Product"></a>
+                <div class="d-flex align-items-center pb-2 border-bottom"><a class="d-block flex-shrink-0 me-2" href="/artist?artist_id={{ item.item.artist.id }}&&item_id={{ item.item.id }}"><img class="rounded-1" src="{{ item.item.itemPhotoComplete.url }}" width="64" alt="Product"></a>
                   <div class="ps-1">
-                    <h6 class="widget-product-title"><a href="/artist?artist_id={{ item.artist.id }}&&item_id={{ item.id }}">{{ item.item.title }}</a></h6>
+                    <h6 class="widget-product-title"><a href="/artist?artist_id={{ item.item.artist.id }}&&item_id={{ item.item.id }}">{{ item.item.title }}</a></h6>
                     <div class="widget-product-meta"><span class="border-end pe-2 me-2">$ {{ item.item.price }} X ({{ item.quantityByItems }}) </div>
                   </div>
                 </div>
@@ -112,9 +112,9 @@
 
                 <h2 class="widget-title text-center">Order summary</h2>
                 {%for item in items%}
-                <div class="d-flex align-items-center pb-2 border-bottom"><a class="d-block flex-shrink-0 me-2" href="/artist?artist_id={{ item.artist.id }}&&item_id={{ item.id }}"><img class="rounded-1" src="{{ item.item.itemPhotoComplete.url }}" width="64" alt="Product"></a>
+                <div class="d-flex align-items-center pb-2 border-bottom"><a class="d-block flex-shrink-0 me-2" href="/artist?artist_id={{ item.item.artist.id }}&&item_id={{ item.item.id }}"><img class="rounded-1" src="{{ item.item.itemPhotoComplete.url }}" width="64" alt="Product"></a>
                   <div class="ps-1">
-                    <h6 class="widget-product-title"><a href="/artist?artist_id={{ item.artist.id }}&&item_id={{ item.id }}">{{ item.item.title }}</a></h6>
+                    <h6 class="widget-product-title"><a href="/artist?artist_id={{ item.item.artist.id }}&&item_id={{ item.item.id }}">{{ item.item.title }}</a></h6>
                     <div class="widget-product-meta"><span class="pe-2 me-2">$ {{ item.item.price }} X ({{ item.quantityByItems }})</span></div>
                   </div>
                 </div>
@@ -131,7 +131,6 @@
 
 
 
-    <!-- Back To Top Button--><a class="btn-scroll-top" href="#top" data-scroll><span class="btn-scroll-top-tooltip text-muted fs-sm me-2">Top</span><i class="btn-scroll-top-icon ci-arrow-up">   </i></a>
     <!-- Vendor scrits: js libraries and plugins-->
     <script src="{% static 'jquery/jquery.js' %}"></script>
     <script src="{% static 'cartzilla/vendor/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>

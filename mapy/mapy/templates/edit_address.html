@@ -39,19 +39,19 @@
 
                 {{form.id}}
                 <div class="col-sm-6">
-                  <label for="mc-fn">Full name <span class='text-danger'>*</span></label>
+                  <label for="mc-fn">Full name<span class='text-danger'>*</span></label>
                   {{ form.holder_name }}
                 </div>
                 <div class="col-sm-6">
-                  <label for="shipping_address">Shipping address <span class='text-danger'>*</span></label>
+                  <label for="shipping_address">Shipping address<span class='text-danger'>*</span></label>
                   {{ form.street_address }}
                 </div>
                 <div class="col-sm-6">
-                  <label for="city">City <span class='text-danger'>*</span></label>
+                  <label for="city">City<span class='text-danger'>*</span></label>
                   {{ form.city }}
                 </div>
                 <div class="col-sm-6">
-                  <label for="state">State / Province / Region <span class='text-danger'>*</span></label>
+                  <label for="state">State / Province / Region<span class='text-danger'>*</span></label>
                   {{ form.state }}
                 </div>
                 <div class="col-sm-6">
@@ -63,7 +63,7 @@
                   {{ form.phone_number }}
                 </div>
                 <div class="col-sm-6">
-                  <label  for="instructions">Details to find you place</label>
+                  <label  for="instructions">Details to find you place<span class='text-danger'>*</span></label>
                   {{ form.instructions }}
 
                 </div>
@@ -72,7 +72,7 @@
                   {{ form.country }}
                 </div>
                 <div class="col-sm-6">
-                  <label>Right now shipping is only available in USA</label>
+                  <label><b>Right now shipping is only available in USA</b></label>
                 </div>
                 <button class="btn btn-primary d-block w-100" type="submit">Save changes</button>
               </div>
@@ -82,9 +82,9 @@
               <div class="widget mb-3 d-lg-none">
                 <h2 class="widget-title">Order summary</h2>
                 {%for item in items%}
-                <div class="d-flex align-items-center pb-2 border-bottom"><a class="d-block flex-shrink-0 me-2" href="/item/{{ item.item.id }}"><img class="rounded-1" src="{{ item.item.itemPhotoComplete.url }}" width="64" alt="Product"></a>
+                <div class="d-flex align-items-center pb-2 border-bottom"><a class="d-block flex-shrink-0 me-2" href="/artist?artist_id={{ item.item.artist.id }}&&item_id={{ item.item.id }}"><img class="rounded-1" src="{{ item.item.itemPhotoComplete.url }}" width="64" alt="Product"></a>
                   <div class="ps-1">
-                    <h6 class="widget-product-title"><a href="/item/{{ item.item.id }}">{{ item.item.title }}</a></h6>
+                    <h6 class="widget-product-title"><a href="/artist?artist_id={{ item.item.artist.id }}&&item_id={{ item.item.id }}">{{ item.item.title }}</a></h6>
                     <div class="widget-product-meta"><span class="text-accent pe-2 me-2">$ {{ item.item.price }} X ({{ item.quantityByItems }})</span></div>
                   </div>
                 </div>
@@ -103,9 +103,9 @@
               <div class="widget px-lg-2 py-2 mb-3">
                 <h2 class="widget-title text-center">Order summary</h2>
                 {%for item in items%}
-                <div class="d-flex align-items-center pb-2 border-bottom"><a class="d-block flex-shrink-0 me-2" href="/item/{{ item.item.id }}"><img class="rounded-1" src="{{ item.item.itemPhotoComplete.url }}" width="64" alt="Product"></a>
+                <div class="d-flex align-items-center pb-2 border-bottom"><a class="d-block flex-shrink-0 me-2" href="/artist?artist_id={{ item.item.artist.id }}&&item_id={{ item.item.id }}"><img class="rounded-1" src="{{ item.item.itemPhotoComplete.url }}" width="64" alt="Product"></a>
                   <div class="ps-1">
-                    <h6 class="widget-product-title"><a href="/item/{{ item.item.id }}">{{ item.item.title }}</a></h6>
+                    <h6 class="widget-product-title"><a href="/artist?artist_id={{ item.item.artist.id }}&&item_id={{ item.item.id }}">{{ item.item.title }}</a></h6>
                     <div class="widget-product-meta"><span class="text-accent pe-2 me-2">$ {{ item.item.price }} X ({{ item.quantityByItems }})</span></div>
                   </div>
                 </div>
@@ -120,7 +120,6 @@
 
 
 
-    <!-- Back To Top Button--><a class="btn-scroll-top" href="#top" data-scroll><span class="btn-scroll-top-tooltip text-muted fs-sm me-2">Top</span><i class="btn-scroll-top-icon ci-arrow-up">   </i></a>
     <!-- Vendor scrits: js libraries and plugins-->
     <script src="{% static 'jquery/jquery.js' %}"></script>
     <script src="{% static 'cartzilla/vendor/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
