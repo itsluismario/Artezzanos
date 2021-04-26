@@ -143,9 +143,10 @@ class ShippingForm(forms.ModelForm):
     				                   'name':'instructions','placeholder':'Instructions to find your place',
                                        'aria-label':'Instructions','data-msg':'Please how we can find your place.'}))
 
-    country = CountryField().formfield(widget=CountrySelectWidget(
+    country = CountryField(blank_label='(select country)').formfield(widget=CountrySelectWidget(
            attrs={'class':'form-control','name':'country',
-           'aria-label':'country','data-msg':'Please select your country.'}
+           'aria-label':'country','data-msg':'Please select your country.', 'disabled':'disabled','initial':'2'},
+
         ))
 
     class Meta(UserCreationForm.Meta):

@@ -22,6 +22,16 @@ import itertools
 
 User = settings.AUTH_USER_MODEL
 
+
+
+
+
+
+
+
+
+
+
 def categories(request):
     login_user = request.user.is_authenticated
 
@@ -56,6 +66,17 @@ def categories(request):
         'subobj': subobj,
     })
 
+
+
+
+
+
+
+
+
+
+
+
 def index(request):
     login_user = request.user.is_authenticated
 
@@ -84,6 +105,16 @@ def index(request):
         'categories': categories,
         'subcategories': subcategories,
     })
+
+
+
+
+
+
+
+
+
+
 
 def update_item(request):
     # Find the item with this ID
@@ -119,6 +150,16 @@ def update_item(request):
                         'quantity': car.quantity
                         })
 
+
+
+
+
+
+
+
+
+
+
 def delete_item(request):
         # Find the carHeader
         car = CartHeader.objects.get(pk=request.COOKIES["cookieCar"])
@@ -152,6 +193,16 @@ def delete_item(request):
                             'quantity': car.quantity
                             })
 
+
+
+
+
+
+
+
+
+
+
 def artist(request):
     login_user = request.user.is_authenticated
     categories = Category.objects.filter().all()
@@ -176,29 +227,13 @@ def artist(request):
         'subcategories': subcategories,
     })
 
-"""
-Start comment
-We are not using this def rightnow
-"""
-def item(request, item_id):
-    login_user = request.user.is_authenticated
-    try:
-        car = CartHeader.objects.get(pk=request.COOKIES["cookieCar"])
-    except:
-        car = None
-    # Reminder: You can use exist() when you have first()
-    if car == None:
-        if login_user:
-            car = CartHeader.objects.create(user=request.user,total=0,quantity=0)
-        else:
-            car = CartHeader.objects.create(total=0,quantity=0)
-    return render(request,'item.html', {
-        "item": Item.objects.get(pk=item_id),
-        "car": car
-    })
-"""
- End comment
-"""
+
+
+
+
+
+
+
 
 def shop_cart(request):
     login_user = request.user.is_authenticated
@@ -237,16 +272,18 @@ def shop_cart(request):
         return redirect('/cart')
     # All the items of the car
     items = CartBody.objects.filter(cartHeader=car)
+
     total_tmp=0
     quantity_tmp = 0
     for item in items:
+        print(item.item.artist.id)
         total_tmp = total_tmp+item.subtotal
         quantity_tmp = quantity_tmp+item.quantityByItems
     car.total = total_tmp
     car.quantity = quantity_tmp
     car.save()
 
-    returnHTML = render(request,'shop-cart.html', {
+    returnHTML = render(request,'shop_cart.html', {
         'car': car,
         'items': items,
         'categories': categories,
@@ -254,6 +291,16 @@ def shop_cart(request):
     })
     returnHTML.set_cookie("cookieCar",car.id)
     return returnHTML
+
+
+
+
+
+
+
+
+
+
 
 def shipping(request):
     login_user = request.user.is_authenticated
@@ -307,54 +354,115 @@ def shipping(request):
     else:
         return redirect("/login")
 
+
+
+
+
+
+
+
+
+
+
 def payment(request):
     categories = Category.objects.filter().all()
     subcategories = SubCategory.objects.filter().all()
     form = PaymentForm()
     errors = None
     car = CartHeader.objects.get(pk=request.COOKIES["cookieCar"])
+
+    # Create a list for the cart description
     items = CartBody.objects.filter(cartHeader=car)
+    listItems = ""
+    for item in items:
+        if listItems == "":
+            listItems = str(item.item)
+        else:
+            listItems = listItems+","+str(item.item)
+
     if 'id' in request.GET:
         shippingaddress = ShippingAddress.objects.get(pk=request.GET["id"])
 
     if request.method == "POST":
 
         try:
-            # Crear un usuario donde se guarda en customer
-            customer = openpay.Customer.create(
-            name="Juan",
-            email="somebody@example.com",
-            address={
-                "city": "Queretaro",
-                "state":"Queretaro",
-                "line1":"Calle de las penas no 10",
-                "postal_code":"76000",
-                "line2":"col. san pablo",
-                "line3":"entre la calle de la alegria y la calle del llanto",
-                "country_code":"MX"
-            },
-            last_name="Perez",
-            phone_number="44209087654"
-            )
-            # Create a card for the customer
-            card = customer.cards.create(
-            	card_number="4111111111111111",
-            	holder_name="Juan Perez Ramirez",
-            	expiration_year="23",
-            	expiration_month="12",
-            	cvv2="110"
-            )
-            # create a transfer for the customer
-            charge = customer.charges.create(
-                source_id=card.id,
-                method="card", #???
-                amount="100",
-                description='Cargo de Prueba', #Product
-                redirect_url='http://www.openpay.mx/index.html', # Thanks page
-                device_session_id="cs345ds32dFdfgE43Sa", # csrf_token
-            )
+            # Check all the customers
+            customers = openpay.Customer.all()
+            # customer1 = openpay.Customer.retrieve()
+            # Crear un usuario openpay al entrar shipping_address
+            # Guardar un token = al id de openpay
+            # Revisar con retrive si ya existe un token y sino crear uno
+            # Fun verifique el usuario de openpay (revisr is el toke existe en mis db .... revisen si existen un token si si envia que si o no existen)
+            # Otra verfique las direcciones openpay
 
-            print(request.POST["csrfmiddlewaretoken"])
+            for customer in customers["data"]:
+                userEmail=request.user.email
+                # Check if OpenPay has already a user with the same email as the username
+                if customer["email"] == userEmail:
+                    # Check if the customer already exist
+                    customer = openpay.Customer.retrieve(customer["id"])
+                    """
+                    NOTE: The customer might have many cards
+                    """
+                    # Check if the customer´s card already exist
+                    cards = customer.cards.all()
+                    for card in cards["data"]:
+                        card = customer.cards.retrieve(card["id"])
+                        if not card:
+                            # Create a card for the customer
+                            card = customer.cards.create(
+                            	card_number=request.POST["card_number"],
+                            	holder_name=request.POST["holder_name"],
+                            	expiration_year=request.POST["expiration_year"],
+                            	expiration_month=request.POST["expiration_month"],
+                            	cvv2=request.POST["cvc"]
+                            )
+                        # Create a transfer for the customer
+                        charge = customer.charges.create(
+                            source_id=card.id,
+                            method="card",
+                            amount=car.total,
+                            description=listItems, #Products
+                            redirect_url='http://127.0.0.1:8000/thanks', # Thanks page
+                            device_session_id=request.POST["csrfmiddlewaretoken"], # csrf_token
+                        )
+
+                # if the customer DOES NOT exist
+                else:
+                    # Create an user where it is saved as customer
+                    customer = openpay.Customer.create(
+                    name=request.user.first_name,
+                    email=request.user.email,
+                    address={
+                        "city": shippingaddress.city,
+                        "state":shippingaddress.state,
+                        "line1":shippingaddress.street_address,
+                        "postal_code":shippingaddress.shipping_zip,
+                        "line2":shippingaddress.instructions,
+                        "country_code":shippingaddress.country
+                    },
+                    last_name=request.user.last_name,
+                    phone_number=shippingaddress.phone_number
+                    )
+                    # Create a card for the customer
+                    card = customer.cards.create(
+                    	card_number=request.POST["card_number"],
+                        holder_name=request.POST["holder_name"],
+                        expiration_year=request.POST["expiration_year"],
+                        expiration_month=request.POST["expiration_month"],
+                        cvv2=request.POST["cvc"]
+                    )
+                    # Create a transfer for the customer
+                    charge = customer.charges.create(
+                        source_id=card.id,
+                        method="card",
+                        amount=car.total,
+                        description=listItems, #Product
+                        redirect_url='http://127.0.0.1:8000/thanks', # Thanks page
+                        device_session_id=request.POST["csrfmiddlewaretoken"], # csrf_token
+                    )
+
+                    print(request.POST["csrfmiddlewaretoken"])
 
         except Exception as e:
             print(e)
@@ -371,6 +479,48 @@ def payment(request):
         'categories': categories,
         'subcategories': subcategories
         })
+
+
+
+
+
+
+
+
+
+def thanks(request):
+    categories = Category.objects.filter().all()
+    subcategories = SubCategory.objects.filter().all()
+    return render(request,'thanks_page.html', {
+        'categories': categories,
+        'subcategories': subcategories
+        })
+
+
+
+
+
+
+
+
+
+def not_found(request):
+    categories = Category.objects.filter().all()
+    subcategories = SubCategory.objects.filter().all()
+    return render(request,'not_found.html', {
+        'categories': categories,
+        'subcategories': subcategories
+        })
+
+
+
+
+
+
+
+
+
+
 
 def edit(request):
     categories = Category.objects.filter().all()
@@ -428,6 +578,15 @@ def edit(request):
     else:
         return redirect("/login")
 
+
+
+
+
+
+
+
+
+
 def user_login(request):
     categories = Category.objects.filter().all()
     subcategories = SubCategory.objects.filter().all()
@@ -471,6 +630,16 @@ def user_login(request):
         'categories': categories,
         'subcategories': subcategories
         })
+
+
+
+
+
+
+
+
+
+
 
 def user_signup(request):
     categories = Category.objects.filter().all()
@@ -525,10 +694,30 @@ def user_signup(request):
     else:
         return redirect( "/" )
 
+
+
+
+
+
+
+
+
+
+
 @login_required
 def user_logout(request):
     do_logout(request)
     return HttpResponseRedirect(reverse('core:index'))
+
+
+
+
+
+
+
+
+
+
 
 def about(request):
     categories = Category.objects.filter().all()

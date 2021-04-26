@@ -17,16 +17,6 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS= ['username']
 
-class UserProfile(models.Model):
-    user = models.OneToOneField(
-    # https://docs.djangoproject.com/en/3.1/topics/auth/customizing/
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    stripe_customer_id = models.CharField(max_length=50, blank=True, null=True)
-    one_click_purchasing = models.BooleanField(default=False)
-
-    def __str__(self):
-        return self.user.username
-
 class Region(models.Model):
     region = models.CharField(max_length=100)
     def __str__(self):

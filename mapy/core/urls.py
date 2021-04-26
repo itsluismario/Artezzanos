@@ -12,11 +12,12 @@ urlpatterns = [
     path('logout/', views.user_logout, name='logout'),
     path('cart', views.shop_cart, name='cart'),
     path('artist', views.artist, name='artist'),
-    path('item', views.item, name='item'),
     path('update_item',views.update_item, name='updateItem'),
     path('delete_item',views.delete_item, name='deleteItem'),
     path('payment',views.payment, name='payment'),
     path('shipping',views.shipping, name='shipping'),
     path('edit',views.edit, name='edit'),
     path('about',views.about, name='about'),
+    path('thanks',views.thanks, name='thanks'),
+    path('404',views.not_found, name='notFound'),
 ]
