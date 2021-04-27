@@ -1,11 +1,18 @@
-Fix video
-Fix Openpay
 
+NIVELES:
+  FACIL
+  MEDIO
+  TARDADO
 
-Como buscar el id de customer???
-Arreglar el link de los productos
-Arreglar Video
-Opcion de forget passwords?
-Adminstrator Page
+NECESARIAS:
+  - Fix video - FACIL
 
-Error when you want to log in with a different account 
+  - Fix Openpay - TARDADO
+    Create a card or modify it
+
+  - Forget passwords? feature - TARDADO
+
+  - Fiex error when you want to log in with a different account - MEDIO
+
+NO TAN NECESARIAS:
+  - Adminstrator Page (¿Por qué? porque se pueden ver los pedidos en openpay) - TARDADO
