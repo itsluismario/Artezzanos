@@ -145,7 +145,7 @@ class ShippingForm(forms.ModelForm):
 
     country = CountryField(blank_label='(select country)').formfield(widget=CountrySelectWidget(
            attrs={'class':'form-control','name':'country',
-           'aria-label':'country','data-msg':'Please select your country.', 'disabled':'disabled','initial':'2'},
+           'aria-label':'country','data-msg':'Please select your country.'},
 
         ))
 

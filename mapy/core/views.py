@@ -8,7 +8,7 @@ from core.forms import UserSignUpForm, UserLoginForm, PaymentForm, ShippingForm
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 
-from core.models import Item, Artist, CartHeader, CartBody, ShippingAddress, Payment, Category, SubCategory, About, TeamMemeber, FAQ
+from core.models import UserProfile, Item, Artist, CartHeader, CartBody, ShippingAddress, Payment, Category, SubCategory, About, TeamMemeber, FAQ
 
 from django.conf import settings
 
@@ -276,7 +276,6 @@ def shop_cart(request):
     total_tmp=0
     quantity_tmp = 0
     for item in items:
-        print(item.item.artist.id)
         total_tmp = total_tmp+item.subtotal
         quantity_tmp = quantity_tmp+item.quantityByItems
     car.total = total_tmp
@@ -383,17 +382,66 @@ def payment(request):
     if 'id' in request.GET:
         shippingaddress = ShippingAddress.objects.get(pk=request.GET["id"])
 
+    # Openpay
+    # Check if the token already exist in the db. If not, create one
+    exist = UserProfile.objects.get(user=request.user)
+    def validateUser(request, exist):
+        # If it exists
+        if exist.token != None:
+            return True
+        # If not, create a token
+        else:
+            # Create an user where it is saved as customer
+            customer = openpay.Customer.create(
+            name=request.user.first_name,
+            last_name=request.user.last_name,
+            email=request.user.email,
+            address={
+                "city": shippingaddress.city,
+                "state": shippingaddress.state,
+                "line1": shippingaddress.street_address,
+                "postal_code": shippingaddress.shipping_zip,
+                "line2": shippingaddress.instructions,
+                "country_code": str(shippingaddress.country)
+            },
+            phone_number = str(shippingaddress.phone_number)
+            )
+            # Save the token as the openpay ID
+            exist.token = customer.id
+            if exist.save():
+                # If it returns True, go to UpdateAddress
+                return True
+            else:
+                # If it returns False, do not do anything
+                return False
+
+    def UpdateAddress(request, exist):
+        customer = openpay.Customer.retrieve(exist.token)
+
+        customer.address.city = shippingaddress.city
+        customer.address.state = shippingaddress.state
+        customer.address.line1 = shippingaddress.street_address
+        customer.address.postal_code = shippingaddress.shipping_zip
+        customer.address.line2 = shippingaddress.instructions
+        customer.address.country_code = str(shippingaddress.country)
+        customer.phone_number = str(shippingaddress.phone_number)
+
+        customer.save()
+
+    # if validateUser is True, update address
+    if validateUser(request, exist):
+        UpdateAddress(request, exist)
+
+
     if request.method == "POST":
 
         try:
+
+            """
+            Start: Modify this
+            """
             # Check all the customers
             customers = openpay.Customer.all()
-            # customer1 = openpay.Customer.retrieve()
-            # Crear un usuario openpay al entrar shipping_address
-            # Guardar un token = al id de openpay
-            # Revisar con retrive si ya existe un token y sino crear uno
-            # Fun verifique el usuario de openpay (revisr is el toke existe en mis db .... revisen si existen un token si si envia que si o no existen)
-            # Otra verfique las direcciones openpay
 
             for customer in customers["data"]:
                 userEmail=request.user.email
@@ -463,7 +511,11 @@ def payment(request):
                     )
 
                     print(request.POST["csrfmiddlewaretoken"])
+            """
+            End: Modify this
+            """
 
+            
         except Exception as e:
             print(e)
             raise
@@ -598,9 +650,8 @@ def user_login(request):
             user = authenticate(username=request.POST['email'], password=request.POST['password'])
 
             if user is not None:
-                print("Login")
 
-                # verifica si existe cookie
+                # Verifies if a cookie exists
                 if "cookieCar" in request.session:
 
                     carWithThisCookie = CartHeader.objects.get(pk=request.COOKIES["cookieCar"])
@@ -623,7 +674,12 @@ def user_login(request):
                 # Redirect to a success page.
                 return redirect("/")
             else:
-                print(form.errors)
+                return render(request,'login.html',{
+                    'form':form,
+                    'errors': "The email/password you entered isn’t not correct.",
+                    'categories': categories,
+                    'subcategories': subcategories,
+                })
 
     return render(request,'login.html', {
         'form': form,
@@ -652,32 +708,29 @@ def user_signup(request):
             user_form = UserSignUpForm(data=request.POST)
 
             if user_form.is_valid():
-                # email = user_form.cleaned_data['email']
+
                 user = user_form.save(commit=False)
                 user.username = user.email
                 user.first_name = user.first_name
                 user.last_name = user.last_name
 
                 if user.save():
-                     return render(request,'signup.html',{
+                    return render(request,'signup.html',{
                          'form':form,
                          'errors':'The user already exist',
                          'categories': categories,
                          'subcategories': subcategories,
-                     })
+                    })
                 else:
                     user.set_password(user.password)
                     user.save()
-                    print('saved!')
+                    userprofile = UserProfile.objects.create(user=user)
                     do_login(request, user, backend='django.contrib.auth.backends.ModelBackend')
                     # Redirect to a success page.
                     return redirect("/")
 
-                    # do_login(request,user)
-                    # return user_signup(request)
             else:
                 print(user_form.errors)
-                # HERE SHOULD SEND A MESSAGE !!!!!
                 return render(request,'signup.html',{
                     'form':form,
                     'errors':user_form.errors,

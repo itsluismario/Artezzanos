@@ -1,6 +1,6 @@
 from django.contrib import admin
 # Register your models here.
-from .models import Artist, Item, Payment, ShippingAddress, CartHeader, CartBody, Region, Category, SubCategory, Community, About, TeamMemeber, FAQ
+from .models import UserProfile, Artist, Item, Payment, ShippingAddress, CartHeader, CartBody, Region, Category, SubCategory, Community, About, TeamMemeber, FAQ
 
 
 from django.contrib.auth.admin import UserAdmin
@@ -56,6 +56,7 @@ admin.site.register(Region,RegionAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(SubCategory,SubCategoryAdmin)
 admin.site.register(Community,CommunityAdmin)
+admin.site.register(UserProfile)
 admin.site.register(Artist)
 admin.site.register(Item)
 admin.site.register(CartHeader)

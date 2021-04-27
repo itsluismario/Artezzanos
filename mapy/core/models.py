@@ -17,6 +17,15 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS= ['username']
 
+class UserProfile(models.Model):
+    user = models.OneToOneField(
+    # https://docs.djangoproject.com/en/3.1/topics/auth/customizing/
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    token = models.CharField(max_length=50, blank=True, null=True)
+
+    def __str__(self):
+        return f"user: {self.user.username}; token: {self.token}"
+
 class Region(models.Model):
     region = models.CharField(max_length=100)
     def __str__(self):
