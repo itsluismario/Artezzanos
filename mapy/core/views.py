@@ -8,7 +8,7 @@ from core.forms import UserSignUpForm, UserLoginForm, PaymentForm, ShippingForm
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 
-from core.models import UserProfile, Item, Artist, CartHeader, CartBody, ShippingAddress, Payment, Category, SubCategory, About, TeamMemeber, FAQ
+from core.models import UserProfile, UserCard, Item, Artist, CartHeader, CartBody, ShippingAddress, Payment, Category, SubCategory, About, TeamMemeber, FAQ
 
 from django.conf import settings
 
@@ -432,90 +432,50 @@ def payment(request):
     if validateUser(request, exist):
         UpdateAddress(request, exist)
 
-
     if request.method == "POST":
 
         try:
+            # Check if the customer´s card already exist
+            exist_card = UserCard.objects.get(user=request.user)
+            card = customer.cards.retrieve(exist_card.token)
+            print(card.card_number)
 
-            """
-            Start: Modify this
-            """
-            # Check all the customers
-            customers = openpay.Customer.all()
+            # if the card DOES NOT exist
+            if card == None:
+                # Create a card for the customer
+                card = customer.cards.create(
+                	card_number=request.POST["card_number"],
+                	holder_name=request.POST["holder_name"],
+                	expiration_year=request.POST["expiration_year"],
+                	expiration_month=request.POST["expiration_month"],
+                	cvv2=request.POST["cvc"]
+                )
+                card.token = card.id
+                card.save()
 
-            for customer in customers["data"]:
-                userEmail=request.user.email
-                # Check if OpenPay has already a user with the same email as the username
-                if customer["email"] == userEmail:
-                    # Check if the customer already exist
-                    customer = openpay.Customer.retrieve(customer["id"])
-                    """
-                    NOTE: The customer might have many cards
-                    """
-                    # Check if the customer´s card already exist
-                    cards = customer.cards.all()
-                    for card in cards["data"]:
-                        card = customer.cards.retrieve(card["id"])
-                        if not card:
-                            # Create a card for the customer
-                            card = customer.cards.create(
-                            	card_number=request.POST["card_number"],
-                            	holder_name=request.POST["holder_name"],
-                            	expiration_year=request.POST["expiration_year"],
-                            	expiration_month=request.POST["expiration_month"],
-                            	cvv2=request.POST["cvc"]
-                            )
-                        # Create a transfer for the customer
-                        charge = customer.charges.create(
-                            source_id=card.id,
-                            method="card",
-                            amount=car.total,
-                            description=listItems, #Products
-                            redirect_url='http://127.0.0.1:8000/thanks', # Thanks page
-                            device_session_id=request.POST["csrfmiddlewaretoken"], # csrf_token
-                        )
+                # Create a transfer for the customer
+                charge = customer.charges.create(
+                    source_id=card.id,
+                    method="card",
+                    amount=car.total,
+                    description=listItems, #Products
+                    redirect_url='http://127.0.0.1:8000/thanks', # Thanks page
+                    device_session_id=request.POST["csrfmiddlewaretoken"], # csrf_token
+                )
 
-                # if the customer DOES NOT exist
-                else:
-                    # Create an user where it is saved as customer
-                    customer = openpay.Customer.create(
-                    name=request.user.first_name,
-                    email=request.user.email,
-                    address={
-                        "city": shippingaddress.city,
-                        "state":shippingaddress.state,
-                        "line1":shippingaddress.street_address,
-                        "postal_code":shippingaddress.shipping_zip,
-                        "line2":shippingaddress.instructions,
-                        "country_code":shippingaddress.country
-                    },
-                    last_name=request.user.last_name,
-                    phone_number=shippingaddress.phone_number
-                    )
-                    # Create a card for the customer
-                    card = customer.cards.create(
-                    	card_number=request.POST["card_number"],
-                        holder_name=request.POST["holder_name"],
-                        expiration_year=request.POST["expiration_year"],
-                        expiration_month=request.POST["expiration_month"],
-                        cvv2=request.POST["cvc"]
-                    )
-                    # Create a transfer for the customer
-                    charge = customer.charges.create(
-                        source_id=card.id,
-                        method="card",
-                        amount=car.total,
-                        description=listItems, #Product
-                        redirect_url='http://127.0.0.1:8000/thanks', # Thanks page
-                        device_session_id=request.POST["csrfmiddlewaretoken"], # csrf_token
-                    )
+            # Check if the card exist
+            elif card.card_number == request.POST["card_number"]:
+                # Create a transfer for the customer
+                charge = customer.charges.create(
+                    source_id=card.token,
+                    method="card",
+                    amount=car.total,
+                    description=listItems, #Product
+                    redirect_url='http://127.0.0.1:8000/thanks', # Thanks page
+                    device_session_id=request.POST["csrfmiddlewaretoken"], # csrf_token
+                )
 
-                    print(request.POST["csrfmiddlewaretoken"])
-            """
-            End: Modify this
-            """
 
-            
         except Exception as e:
             print(e)
             raise
