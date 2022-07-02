@@ -1,11 +1,13 @@
-# Artezzanos - a plataform that open new frontiers to the greatest artist in Mexico
 
-Artezzanos is a plataform that aims to create new oportuninites to the mancrafts of Mexico to have more selling spots without the need of moving out of their town and use their time to create unique and valuable art pieces. Right now, the artist has been forced to sell their handcrafts for a bargain price by people who take advantage of their unprivileged position. 
+# Artezzanos - a platform to open new frontiers to the greatest artist in Mexico
 
-Please, feel free of using of using it. 
+This e-commerce was built to support artists from unprivileged areas. The main reason we developed this channel was to create a new door for these talented people. Right now, they are living in a vicious cycle where their art is being sold to people who abused the unprivileged status of the artist and force them to sell their artcraft for a bargain price. This obstacle interrupts the creation of financial and economical freedom and stops their options to grow as an artist.
 
-In case, you are interested on collaborating, please email me to itsluismario@gmail.com
+Artezzanos was built using Django as a framework. It is ready to connect to Openpay. Its last version only requires resetting the user´s password. Besides that, it is ready to run. 
 
--- Luis Mario
+if you want to collaborate, send me an email at itsluismario@gmail.com
+
+Please, feel free to use it. And help others. 
+
 
 <img width="876" alt="Screen Shot 2022-07-02 at 15 06 19" src="https://user-images.githubusercontent.com/65731503/177014678-8596b475-6246-440d-ba3d-051528acf147.png">
