@@ -13,7 +13,7 @@ Features:
   - Hours spent: Each art depicts how many hours was taken to create the art piece.
 
 Why did we develop this website, and we did not use a third-party to start selling?  
-  - The main purpose is to give the highest margin possible to the artist, but this is not possible when the third-parties charge you 10% of your selling
+  - The main purpose is to give the highest margin possible to the artist, but this is not possible when the third-parties charge you 10% of your selling.
   - The UX designs that were found were complex and did not have any option to represent our most valuable thing, the hours spent on each art piece. 
   - The product that we wanted to develop was´nt complex at all, so it was very quick to develop and implement. 
 
