@@ -1,5 +1,2 @@
-django
-pillow
-django-countries
-django-utils-six
+django == 4.0.5
 openpay
