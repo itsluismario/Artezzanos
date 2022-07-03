@@ -21,5 +21,6 @@ if you want to collaborate, send me an email at itsluismario@gmail.com
 
 Please, feel free to use it. And help others. 
 
+Not important: the app is called mapy, because it was its previous name. 
 
 <img width="876" alt="Screen Shot 2022-07-02 at 15 06 19" src="https://user-images.githubusercontent.com/65731503/177014678-8596b475-6246-440d-ba3d-051528acf147.png">
