@@ -5,14 +5,9 @@ NIVELES:
   TARDADO
 
 NECESARIAS:
-  - Fix video - FACIL
-
-  - Fix Openpay - TARDADO
-    Create a card or modify it
-
   - Forget passwords? feature - TARDADO
-
-  - Fiex error when you want to log in with a different account - MEDIO
+  - Fix error when you want to log in with a different account - MEDIO
+  - The cart does not update when you increase the number of the item - MEDIO
 
 NO TAN NECESARIAS:
-  - Adminstrator Page (¿Por qué? porque se pueden ver los pedidos en openpay) - TARDADO
+  - Adminstrator Page (¿Por qué se pueden ver los pedidos en openpay?) - TARDADO
