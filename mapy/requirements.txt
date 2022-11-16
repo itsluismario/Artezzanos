@@ -1,2 +1,3 @@
 django == 4.0.5
 openpay
+django-countries == 7.4.2

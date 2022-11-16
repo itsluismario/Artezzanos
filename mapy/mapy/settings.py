@@ -123,12 +123,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-if online:
-    STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-else:
-    STATICFILES_DIRS=[
-        os.path.join(BASE_DIR, 'static/')
-    ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'galery')
 MEDIA_URL = '/'
@@ -146,3 +141,6 @@ openpay.api_key = "sk_84c6e2802b2e450d963385e8cd891124"
 openpay.verify_ssl_certs = False
 openpay.merchant_id = "mkjy3yttod6hdn9wkxje"
 openpay.production = False  # By default this works in sandbox mode
+
+# settings.py
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
