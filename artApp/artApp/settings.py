@@ -27,7 +27,7 @@ SECRET_KEY = 'f4$dwrf&1_)9^sr*d&dd@(gq9_ls)^&uy%sy_ao#i4c84awq)x'
 DEBUG = False
 online = False
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1','artapp.herokuapp.com']
 
 # Application definition
 INSTALLED_APPS = [
