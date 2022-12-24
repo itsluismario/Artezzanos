@@ -7,9 +7,6 @@ from django_countries.widgets import CountrySelectWidget
 
 from core.models import User, ShippingAddress
 
-"""""
-START MODIFICATION
-"""""
 Usuario = get_user_model()
 
 class UserSignUpForm(UserCreationForm):
@@ -153,6 +150,17 @@ class ShippingForm(forms.ModelForm):
         model = ShippingAddress
         fields = ['holder_name','street_address','city','state','shipping_zip','phone_number','instructions','country']
 
-"""""
-END MODIFICATION
-"""""
+
+from django.contrib.auth.forms import PasswordResetForm
+
+class UserPasswordResetForm(PasswordResetForm):
+    def __init__(self, *args, **kwargs):
+        super(UserPasswordResetForm, self).__init__(*args, **kwargs)
+
+    email = forms.EmailField(label='', widget=forms.EmailInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Email',
+        'type': 'email',
+        'name': 'email',
+        'data-msg':'Correo inválido.'
+        }))

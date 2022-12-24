@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django_countries',
     'django_rename_app',
     'core',
-    'artApp'
+    'artApp',
+    'crispy_forms'
 ]
 
 MIDDLEWARE = [
@@ -143,3 +144,18 @@ openpay.production = False  # By default this works in sandbox mode
 
 # settings.py
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+#gmail_send/settings.py
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'holaluismario@gmail.com'
+EMAIL_HOST_PASSWORD = 'gnqvrncvwoaxdnbd' #past the key or password app here
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'default from email'
+
+#it allows to avoid an error in the terminal
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+#it allows to style the reset password confirm form
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
