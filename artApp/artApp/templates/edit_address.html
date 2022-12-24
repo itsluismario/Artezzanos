@@ -1,0 +1,137 @@
+{% extends 'layout.html' %}
+{% load static %}
+  {% block content %}
+  <!-- Body-->
+  <body class="handheld-toolbar-enabled">
+
+
+    <!-- Page Title-->
+    <div class="page-title-overlap bg-light pt-4">
+      <div class="container d-lg-flex justify-content-between py-2 py-lg-3">
+        <div class="order-lg-1 pe-lg-4 text-center text-lg-start">
+          <h1 class="h3 text-dark mb-0">Your cart</h1>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="container mb-5 pb-3">
+      <div class="bg-light shadow-lg rounded-3 overflow-hidden">
+        <div class="row">
+          <!-- Content-->
+          <section class="col-lg-8 pt-2 pt-lg-4 pb-4 mb-3">
+            <div class="pt-2 px-4 pe-lg-0 ps-xl-5">
+              <!-- Title-->
+              <h2 class="h6 border-bottom pb-3 mb-3">Edit address:</h2>
+
+              <!-- Edit address-->
+              <form method="POST" autocomplete="off">
+              {% csrf_token %}
+              <div class="row pb-4 gx-4 gy-3">
+                {% if errors %}
+                <div class="alert alert-primary d-flex" role="alert">
+                  <div class="alert-icon">
+                    <i class="ci-bell"></i>
+                  </div>
+                  <div>{{errors}}</div>
+                </div>
+                {% endif %}
+
+                {{form.id}}
+                <div class="col-sm-6">
+                  <label for="mc-fn">Full name<span class='text-danger'>*</span></label>
+                  {{ form.holder_name }}
+                </div>
+                <div class="col-sm-6">
+                  <label for="shipping_address">Shipping address<span class='text-danger'>*</span></label>
+                  {{ form.street_address }}
+                </div>
+                <div class="col-sm-6">
+                  <label for="city">City<span class='text-danger'>*</span></label>
+                  {{ form.city }}
+                </div>
+                <div class="col-sm-6">
+                  <label for="state">State / Province / Region<span class='text-danger'>*</span></label>
+                  {{ form.state }}
+                </div>
+                <div class="col-sm-6">
+                  <label for="shipping_zip">Shipping Zip<span class='text-danger'>*</span></label>
+                  {{ form.shipping_zip }}
+                </div>
+                <div class="col-sm-6">
+                  <label for="phone_number">Phone number<span class='text-danger'>*</span></label>
+                  {{ form.phone_number }}
+                </div>
+                <div class="col-sm-6">
+                  <label  for="instructions">Details to find you place<span class='text-danger'>*</span></label>
+                  {{ form.instructions }}
+
+                </div>
+                <div class="col-sm-6">
+                  <label for="instructions">Select your country</label>
+                  {{ form.country }}
+                </div>
+                <div class="col-sm-6">
+                  <label><b>Right now shipping is only available in USA</b></label>
+                </div>
+                <button class="btn btn-primary d-block w-100" type="submit">Save changes</button>
+              </div>
+              </form>
+
+              <!-- Order preview on mobile (screens small than 991px)-->
+              <div class="widget mb-3 d-lg-none">
+                <h2 class="widget-title">Order summary</h2>
+                {%for item in items%}
+                <div class="d-flex align-items-center pb-2 border-bottom"><a class="d-block flex-shrink-0 me-2" href="/artist?artist_id={{ item.item.artist.id }}&&item_id={{ item.item.id }}"><img class="rounded-1" src="{{ item.item.itemPhotoComplete.url }}" width="64" alt="Product"></a>
+                  <div class="ps-1">
+                    <h6 class="widget-product-title"><a href="/artist?artist_id={{ item.item.artist.id }}&&item_id={{ item.item.id }}">{{ item.item.title }}</a></h6>
+                    <div class="widget-product-meta"><span class="text-accent pe-2 me-2">$ {{ item.item.price }} X ({{ item.quantityByItems }})</span></div>
+                  </div>
+                </div>
+                {%endfor%}
+                <ul class="list-unstyled fs-sm py-3">
+                  <li class="d-flex justify-content-between align-items-center fs-base"><span class="me-2">Total:</span><span class="text-end">$ {{ car.total }}</span></li>
+                </ul>
+              </div>
+            </div>
+          </section>
+          <!-- Sidebar-->
+          <!-- Order preview on desktop (screens larger than 991px)-->
+          <aside class="col-lg-4 d-none d-lg-block ps-xl-5">
+            <hr class="d-lg-none">
+            <div class="p-4 h-100 ms-auto border-start">
+              <div class="widget px-lg-2 py-2 mb-3">
+                <h2 class="widget-title text-center">Order summary</h2>
+                {%for item in items%}
+                <div class="d-flex align-items-center pb-2 border-bottom"><a class="d-block flex-shrink-0 me-2" href="/artist?artist_id={{ item.item.artist.id }}&&item_id={{ item.item.id }}"><img class="rounded-1" src="{{ item.item.itemPhotoComplete.url }}" width="64" alt="Product"></a>
+                  <div class="ps-1">
+                    <h6 class="widget-product-title"><a href="/artist?artist_id={{ item.item.artist.id }}&&item_id={{ item.item.id }}">{{ item.item.title }}</a></h6>
+                    <div class="widget-product-meta"><span class="text-accent pe-2 me-2">$ {{ item.item.price }} X ({{ item.quantityByItems }})</span></div>
+                  </div>
+                </div>
+                {%endfor%}
+                <h3 class="fw-normal text-center my-4"><span class="me-2">Total:</span><span class="text-end">$ {{ car.total }}</span></h3>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- Vendor scrits: js libraries and plugins-->
+    <script src="{% static 'jquery/jquery.js' %}"></script>
+    <script src="{% static 'cartzilla/vendor/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'cartzilla/vendor/simplebar/dist/simplebar.min.js' %}"></script>
+    <script src="{% static 'cartzilla/vendor/tiny-slider/dist/min/tiny-slider.js' %}"></script>
+    <script src="{% static 'cartzilla/vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js' %}"></script>
+    <!-- Main theme script-->
+    <script src="{% static 'cartzilla/js/theme.min.js' %}"></script>
+
+  </body>
+{% endblock %}
+
+  {%block js%}
+  <script src="{%static '/js/shop-cart.js'%}"></script>
+  {%endblock%}

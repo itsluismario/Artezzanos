@@ -1,0 +1,171 @@
+{% extends 'layout.html' %}
+{% load static %}
+  {% block content %}
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-8 py-4 p-xl-5">
+
+          <h2 class="mb-4">{{item.title}} by {{ item.artist }}</h2>
+          <a class="btn btn-outline-secondary" href="{% url 'core:index' %}">Back</a>
+
+          <hr class="my-4">
+          <div class="row">
+
+
+                  <div class="row">
+                    <div class="col-lg-8 col-md-12 col-sm-12">
+                      <!-- Gallery grid with gutters -->
+                      <div class="row pt-3 mx-n2 gallery">
+
+                        <!-- Item -->
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 mb-grid-gutter">
+                            <img style="border-radius: 5px;" class="card-img-top" src="{{ item.itemPhotoComplete.url }}">
+                        </div>
+
+                        <!-- Item -->
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 mb-grid-gutter">
+                          <div >
+                            <img style="border-radius: 5px;" class="card-img-top" src="{{ item.itemPhotoZoomIn.url }}">
+                          </div>
+                        </div>
+
+                        <!-- Item -->
+                        <div class="col-lg-6 col-md-6 col-sm-6 mb-grid-gutter">
+                          <div >
+                            <!-- <img style="border-radius: 5px;" class="card-img-top" src="{{ item.Video.url }}"  type="video/mp4"> -->
+                            <!-- <video controls autoplay> <source src="movie.mp4" type="video/mp4"> <source src="movie.ogg" type="video/ogg"> Your browser does not support the video tag. </video> -->
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="col-lg-4 col-md-0 col-sm-0 col-0">
+                    <div >
+                      <!-- Item -->
+                      <h6 class="card-title">{{item.title}}</h6>
+                      <p class="card-text text-muted">{{item.artType}}<br>${{ item.price }}<br><span class="text-primary">{{ item.hours }} hours spent on this masterpiece </span></p>
+                      <p class="card-text fs-sm">{{item.description}}</p>
+                      <!-- Pill outline button -->
+                      <a href="/cart?item={{ item.id }}" class="btn btn-outline-primary rounded-pill">Add To My Cart</a>
+                    </div>
+                  </div>
+                </div>
+
+
+
+                <!-- Artist grid-->
+                <div class="row pt-3 mx-n2">
+                <!-- Artist Photo-->
+                <div class="col-lg-3 col-md-4 col-sm-3 col-3 px-2 mb-4" data-marker-id="{{ item.id }}">
+                  <div class="card" >
+                    <a class="card-img-top d-block overflow-hidden" style="border-radius: 5px;"><img src="{{ artist.artistPhoto.url }}"></a>
+                  </div>
+                  </div>
+
+                  <!-- Artist Text-->
+                  <div class="col-lg-9 col-md-8 col-sm-9 col-9 px-2 mb-4" data-marker-id="{{ item.id }}">
+                    <div class="card " >
+                      <div class="card-body py-2">
+                        <h2 class="product-title ">{{ artist.artistName }}</h2>
+                        <div class="d-flex justify-content-between">
+                          <div class="product-price">{{ artist.artistText }}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr class="d-sm-none">
+                </div>
+
+                <h5 class="mb-4">More masterpieces by {{ artist.artistName }}</h5>
+                <hr>
+
+                <!-- Products grid-->
+                <div class="row pt-3 mx-n2">
+                  {% for item in items %}
+                  <!-- Product-->
+                  <div class="col-lg-3 col-md-4 col-sm-6 col-6 px-2 mb-4" data-marker-id="{{ item.id }}">
+                    <div class="card " >
+                      <a class="card-img-top d-block overflow-hidden" href="/artist?artist_id={{ item.artist.id }}&&item_id={{ item.id }}"><img src="{{ item.itemPhotoComplete.url }}" alt="Product"></a>
+                      <div class="card-body py-2"><a class="product-meta d-block fs-xs pb-1" href="/artist?artist_id={{ item.artist.id }}&&item_id={{ item.id }}">by {{ item.artist }}</a>
+                        <h3 class="product-title fs-sm"><a href="shop-single-v1.html">{{ item.title }}</a></h3>
+
+                        <div class="d-flex justify-content-between">
+                          <div class="product-price"><span class="text-primary">{{ item.hours }} hours spent on this masterpiece</span> <br>${{ item.price }}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+
+
+
+          </div>
+        </div>
+
+
+          <div class="col-lg-4 map-side-lg pr-lg-0">
+            <div class="map-full shadow-left" id="map"></div>
+          </div>
+
+      </div>
+    </div>
+
+
+  {% endblock %}
+
+
+
+
+
+  {% block js %}
+
+
+  <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAYmWw7M9sB8M6MAN-90VFsWafxdl4yMQ&callback=initMap&libraries=&v=weekly"
+    async>
+  </script>
+
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+  <script type="text/javascript">
+
+  function initMap() {
+    // Create the map.
+    const map = new google.maps.Map(document.getElementById("map"), {
+       zoom: 9,
+      center: { lat: {{ artist.lat }}, lng: {{ artist.long }} },
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      mapTypeControl: false,
+      zoomControl: true,
+      zoomControlOptions: {
+      position: google.maps.ControlPosition.LEFT_TOP,
+    }
+    });
+
+    // Construct the circle for each value in citymap.
+    // Note: We scale the area of the circle based on the population.
+
+      // Add the circle for this city to the map.
+      const cityCircle = new google.maps.Circle({
+        strokeColor: "#fe3638",
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: "#fe3638",
+        fillOpacity: 0.35,
+        map,
+        center: { lat: {{ artist.lat }}, lng: {{ artist.long }} },
+        radius: 20000,
+      });
+
+  }
+
+
+    $(document).ready(function(){
+
+
+    })
+
+  </script>
+  {% endblock %}
