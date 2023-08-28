@@ -21,7 +21,7 @@ TEMPLATE_DIR = os.path.join(os.path.dirname(__file__),'templates')
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'f4$dwrf&1_)9^sr*d&dd@(gq9_ls)^&uy%sy_ao#i4c84awq)x'
+SECRET_KEY = ''
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -138,9 +138,9 @@ AUTHENTICATION_BACKENDS = (
 )
 
 # OPEN PAY
-openpay.api_key = "sk_84c6e2802b2e450d963385e8cd891124"
+openpay.api_key = ""
 openpay.verify_ssl_certs = False
-openpay.merchant_id = "mkjy3yttod6hdn9wkxje"
+openpay.merchant_id = ""
 openpay.production = False  # By default this works in sandbox mode
 
 # settings.py
@@ -150,7 +150,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'holaluismario@gmail.com'
-EMAIL_HOST_PASSWORD = 'gnqvrncvwoaxdnbd' #past the key or password app here
+EMAIL_HOST_PASSWORD = '' #past the key or password app here
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'default from email'
